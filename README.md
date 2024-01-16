@@ -1,6 +1,6 @@
 # Project Initial Report
 
-## Ayush Kumar Tripathi 12103634
+## Ayush Kumar Tripathi 12103634 and Mohak Tiwari 12108526
 
 ### Project Name: SquadScript
 
