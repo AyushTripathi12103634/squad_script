@@ -1,3 +1,5 @@
+import './About.css';
+
 function AboutUs() {
     return (
       <h1>About Page</h1>

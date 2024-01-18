@@ -1,7 +1,11 @@
-function Login(){
-    return(
-        <h1>Login Page</h1>
-    );
+import './Login.css'
+
+function Login() {
+  return (
+    <h1>
+      Login Page
+    </h1>
+  );
 }
 
-export default Login
+export default Login;
