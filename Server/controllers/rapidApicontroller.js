@@ -3,12 +3,12 @@ import https from 'https';
 export const rapidApiDetailController = (req, res) => {
     const options = {
         method: 'GET',
-        hostname: 'judge0-ce.p.rapidapi.com',
+        hostname: process.env.X_RAPID_HOST,
         port: null,
         path: '/about',
         headers: {
-            'X-RapidAPI-Key': 'be270101a9msh71e010a34142a60p1cf850jsn047413fa904a',
-            'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
+            'X-RapidAPI-Key': process.env.RAPID_API_KEY,
+            'X-RapidAPI-Host': process.env.X_RAPID_HOST
         }
     };
 
@@ -37,14 +37,14 @@ export const rapidApiCompileController = (req, res) => {
 
     const options = {
         method: 'POST',
-        hostname: 'judge0-ce.p.rapidapi.com',
+        hostname: process.env.X_RAPID_HOST,
         port: null,
         path: '/submissions?base64_encoded=true&fields=*',
         headers: {
             'content-type': 'application/json',
             'Content-Type': 'application/json',
-            'X-RapidAPI-Key': 'be270101a9msh71e010a34142a60p1cf850jsn047413fa904a',
-            'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
+            'X-RapidAPI-Key': process.env.RAPID_API_KEY,
+            'X-RapidAPI-Host': process.env.X_RAPID_HOST
         }
     };
 
@@ -75,12 +75,12 @@ export const rapidApiResultController = (req, res) => {
 
     const options = {
         method: 'GET',
-        hostname: 'judge0-ce.p.rapidapi.com',
+        hostname: process.env.X_RAPID_HOST,
         port: null,
         path: `/submissions/${id}?base64_encoded=true&fields=*`,
         headers: {
-            'X-RapidAPI-Key': 'be270101a9msh71e010a34142a60p1cf850jsn047413fa904a',
-            'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
+            'X-RapidAPI-Key': process.env.RAPID_API_KEY,
+            'X-RapidAPI-Host': process.env.X_RAPID_HOST
         }
     };
 
