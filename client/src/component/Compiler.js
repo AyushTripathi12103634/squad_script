@@ -232,8 +232,6 @@ function Compiler() {
     }
   }
 
-  // {"stdout":"Hello World","time":"0.001","memory":784,"stderr":null,"token":"e3e8b7a3-1d1b-4dd4-b2c5-3d3d711cd612","compile_output":null,"message":null,"status":{"id":3,"description":"Accepted"}}
-
   const [fileName, setFileName] = useState('C# (Mono 6.6.0.161)');
   const [fileContent, setFileContent] = useState(files[fileName].value);
   const [output, setoutput] = useState("");
@@ -242,6 +240,7 @@ function Compiler() {
   const [executionerror, setexecutionerror] = useState("");
   const [editortheme, seteditortheme] = useState("vs-dark");
   const [stdin, setstdin] = useState("");
+  const [compileoutput, setcompileoutput] = useState("")
   const editorRef = useRef(null);
   const file = files[fileName];
 
@@ -276,12 +275,13 @@ function Compiler() {
 
       const { token } = response.data;
       const result = await axios.get(`http://localhost:5000/api/v1/rapidapi/judge/${token}`);
-      const { stdout, time, memory, stderr } = result.data;
+      const { stdout, time, memory, stderr, compile_output } = result.data;
       setoutput(stdout);
       setexecutiontime(time);
       setexecutionspace(memory);
       setexecutionerror(stderr);
-      console.log(stdout, time, memory, stderr);
+      setcompileoutput(compile_output);
+      console.log(stdout, time, memory, stderr, compile_output);
     }
     catch (e) {
       console.log(e);
@@ -380,12 +380,12 @@ function Compiler() {
         </div>
         <div className='output me-5'>
           <textarea id="inputhandler" className='form-control' onChange={handleinputchange}></textarea>
-          {!executionerror ? (
-            <textarea className='form-control' readOnly>
-              {`Output: ${output}\nTime Taken: ${executiontime}\nSpace Taken: ${executionspace}`}
-            </textarea>
+          {!executionerror && !compileoutput? (
+            <p className='form-control'>
+              Output: {output}<br />Time Taken: {executiontime}<br />Space Taken: {executionspace}
+            </p>
           ) : (
-            <textarea className='form-control' readOnly>{`Error: ${executionerror}`}</textarea>
+            <p className='form-control'>Runtime Error: {executionerror ? executionerror : 'None'}<br />Compile Time Error: {compileoutput ? compileoutput : 'None'}</p>
           )}
         </div>
 
