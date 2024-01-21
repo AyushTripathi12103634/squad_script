@@ -1,0 +1,26 @@
+.language{
+    /* position: absolute; */
+    display: inline;
+    width: 550px;
+}
+.output textarea{
+    word-wrap: break-word;
+    overflow-y:scroll;
+    height: 100px;
+    resize: false;
+    bottom: 35px;
+    position: relative;
+}
+#inputhandler{
+    height: 250px;
+    width: 500px;
+    resize: none;
+    bottom: 50px;
+    position: relative;
+}
+.output{
+    top:50px;
+    position: relative;
+    height: 330px;
+    width: 500px;
+}
