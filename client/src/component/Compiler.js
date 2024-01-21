@@ -293,9 +293,9 @@ function Compiler() {
     <>
 
       <div className='d-flex justify-content-evenly'>
-        <div className='language'>
+        <div className='compiler-language'>
           <form className='d-flex justify-content-evenly'>
-            <select className='form-select' id="languages" onChange={handleLanguageChange} value={fileName}>
+            <select className='form-select' id="compiler-languages" onChange={handleLanguageChange} value={fileName}>
               {Object.keys(files).map((key) => (
                 <option key={key} value={key}>
                   {files[key].language}
@@ -378,14 +378,14 @@ function Compiler() {
           <button className='btn btn-success' onClick={submitcode}>Submit</button>
 
         </div>
-        <div className='output me-5'>
-          <textarea id="inputhandler" className='form-control' onChange={handleinputchange}></textarea>
+        <div className='compiler-output me-5'>
+          <textarea id="compiler-inputhandler" className='form-control compiler-textarea' onChange={handleinputchange}></textarea>
           {!executionerror ? (
-            <textarea className='form-control' readOnly>
+            <textarea className='form-control compiler-textarea' readOnly>
               {`Output: ${output}\nTime Taken: ${executiontime}\nSpace Taken: ${executionspace}`}
             </textarea>
           ) : (
-            <textarea className='form-control' readOnly>{`Error: ${executionerror}`}</textarea>
+            <textarea className='form-control compiler-textarea' readOnly>{`Error: ${executionerror}`}</textarea>
           )}
         </div>
 
