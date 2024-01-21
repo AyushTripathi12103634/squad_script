@@ -7,7 +7,7 @@
     word-wrap: break-word;
     overflow-y:scroll;
     height: 100px;
-    resize: false;
+    resize: none;
     bottom: 35px;
     position: relative;
 }
