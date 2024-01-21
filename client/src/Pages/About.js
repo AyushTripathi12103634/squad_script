@@ -1,6 +1,5 @@
 import Navbar from '../component/Navbar';
 import './About.css';
-
 function AboutUs() {
   return (
     <>
