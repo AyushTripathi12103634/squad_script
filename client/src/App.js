@@ -4,7 +4,6 @@ import Home from './Pages/Home';
 import About from './Pages/About';
 import Join from './Pages/Join';
 import Profile from './Pages/Profile';
-import Signup from './Pages/Signup';
 import Meeting from './Pages/Meeting';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 function App() {
@@ -14,7 +13,6 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/profile" element={<Profile />} />
-      <Route path="/signup" element={<Signup />} />
       <Route path="/join" element={<Join />} />
       <Route path="/about" element={<About />} />
       <Route path="/meeting" element={<Meeting />} />

@@ -1,0 +1,26 @@
+.compiler-language{
+    /* position: absolute; */
+    display: inline;
+    width: 550px;
+}
+.compiler-output .compiler-textarea{
+    word-wrap: break-word;
+    overflow-y:scroll;
+    height: 100px;
+    resize: none;
+    bottom: 35px;
+    position: relative;
+}
+#compiler-inputhandler{
+    height: 250px;
+    width: 500px;
+    resize: none;
+    bottom: 50px;
+    position: relative;
+}
+.compiler-output{
+    top:50px;
+    position: relative;
+    height: 330px;
+    width: 500px;
+}
