@@ -2,6 +2,7 @@ import React, {useEffect, useRef} from "react";
 import Navbar from "../component/Navbar";
 import "./Login.css";
 import { Link } from "react-router-dom";
+import Footer from '../component/Footer';
 const Login = () => {
     const containerRef = useRef(null);
     const overlayBtnRef = useRef(null);
@@ -27,7 +28,7 @@ const Login = () => {
         };
     }, []);
   return (
-    <>
+    <main className="login-main-section">
       <Navbar />
 
       <div className="login-main">
@@ -131,7 +132,9 @@ const Login = () => {
           </div>
         </div>
       </div>
-    </>
+
+      <Footer />
+    </main>
   );
 };
 

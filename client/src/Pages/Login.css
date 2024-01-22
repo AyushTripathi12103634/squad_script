@@ -6,7 +6,9 @@
     --grad-clr1: #1e1e1e;
     --grad-clr2: #1e1e1e;
 }
-
+.login-main-section{
+    height: 100vh;
+}
 .login-main{
     height: 100vh;
     background: #f6f5f7;

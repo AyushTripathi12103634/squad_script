@@ -1,7 +1,8 @@
-import { React, useState, useRef } from 'react';
+import { React, useState, useRef, useEffect } from 'react';
 import axios from "axios";
 import Editor from '@monaco-editor/react';
 import './Compiler.css'
+import { saveAs } from 'file-saver';
 
 function Compiler() {
 
@@ -242,6 +243,7 @@ function Compiler() {
   const [executionerror, setexecutionerror] = useState("");
   const [editortheme, seteditortheme] = useState("vs-dark");
   const [stdin, setstdin] = useState("");
+  const [isTerminalOpen, setisTerminalOpen] = useState(false);
   const editorRef = useRef(null);
   const file = files[fileName];
 
@@ -265,8 +267,40 @@ function Compiler() {
     seteditortheme(e.target.value);
   }
 
+  const downloadcode = (e) => {
+    e.preventDefault();
+    const blob = new Blob([fileContent], { type: "text/plain;charset=utf-8" });
+    saveAs(blob, file.name);
+  }
+
+  const uploadcode = (event) => {
+    event.preventDefault();
+    const uploadedFile = event.target.files[0];
+    if (uploadedFile) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setFileContent(e.target.result);
+        const extension = uploadedFile.name.split('.').pop();
+        for (let key in files) {
+          if (files[key].name.split('.').pop() === extension) {
+            setFileName(key);
+            break;
+          }
+        }
+      };
+      reader.readAsText(uploadedFile);
+    } else {
+      console.log('No file selected');
+    }
+  }
+
+  const changeterminal = (e) => {
+    setisTerminalOpen(!isTerminalOpen);
+  }
+
   const submitcode = async (e) => {
     e.preventDefault();
+    setisTerminalOpen(false);
     try {
       const response = await axios.post(`http://localhost:5000/api/v1/rapidapi/judge`, {
         "language_id": file.id,
@@ -282,12 +316,15 @@ function Compiler() {
       setexecutionspace(memory);
       setexecutionerror(stderr);
       console.log(stdout, time, memory, stderr);
+      setisTerminalOpen(true);
     }
     catch (e) {
       console.log(e);
     }
   }
-
+useEffect(() => {
+        console.log('State updated:', output, executiontime, executionspace, executionerror);
+      }, [output, executiontime, executionspace, executionerror]);
 
   return (
     <>
@@ -303,8 +340,8 @@ function Compiler() {
               ))}
             </select>
             <select className='form-select' onChange={handlethemechange}>
-                <option value="vs-dark">VS-Dark Theme</option>
-                <option value="vs-light">VS-Light Theme</option>
+              <option value="vs-dark">VS-Dark Theme</option>
+              <option value="vs-light">VS-Light Theme</option>
             </select>
           </form>
           <Editor
@@ -375,19 +412,28 @@ function Compiler() {
               "wrappingIndent": "none"
             }}
           />
-          <button className='btn btn-success' onClick={submitcode}>Submit</button>
-
+          <div className='d-flex justify-content-evenly'>
+            <button className='btn btn-success' onClick={submitcode}>Submit</button>
+            <button className='btn btn-primary' onClick={downloadcode}>Download Code File</button>
+            <div style={{ width: 'auto' }}>
+              <input type='file' id='file' className='form-control' onChange={uploadcode} style={{ display: 'none' }} />
+              <label htmlFor='file' className='btn btn-primary'>Upload Code File</label>
+            </div>
+            <button className='btn btn-primary' onClick={changeterminal}>{isTerminalOpen ? 'Close Terminal' : 'Open Terminal'}</button>
+          </div>
         </div>
-        <div className='compiler-output me-5'>
-          <textarea id="compiler-inputhandler" className='form-control compiler-textarea' onChange={handleinputchange}></textarea>
-          {!executionerror ? (
-            <textarea className='form-control compiler-textarea' readOnly>
-              {`Output: ${output}\nTime Taken: ${executiontime}\nSpace Taken: ${executionspace}`}
-            </textarea>
-          ) : (
-            <textarea className='form-control compiler-textarea' readOnly>{`Error: ${executionerror}`}</textarea>
-          )}
-        </div>
+        {isTerminalOpen && (
+          <div className='compiler-output me-5'>
+            <textarea id="compiler-inputhandler" className='form-control compiler-textarea' onChange={handleinputchange}></textarea>
+            {!executionerror ? (
+              <textarea className='form-control compiler-textarea' readOnly>
+                {`Output: ${output}\nTime Taken: ${executiontime}\nSpace Taken: ${executionspace}`}
+              </textarea>
+            ) : (
+              <textarea className='form-control compiler-textarea' readOnly>{`Error: ${executionerror}`}</textarea>
+            )}
+          </div>
+        )}
 
       </div>
     </>
