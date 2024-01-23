@@ -4,6 +4,7 @@ import "./Login.css";
 import { Link } from "react-router-dom";
 import Footer from '../component/Footer';
 const Login = () => {
+    // const [name,setname]
     const containerRef = useRef(null);
     const overlayBtnRef = useRef(null);
 
@@ -51,6 +52,14 @@ const Login = () => {
                 or use your email for registration
               </span>
               <div className="login-infield">
+                <input
+                  className="login-input"
+                  type="text"
+                  placeholder="Username"
+                />
+                <label className="login-label" />
+              </div>
+              <div className="login-infield">
                 <input className="login-input" type="text" placeholder="Name" />
                 <label className="login-label" />
               </div>
@@ -71,6 +80,7 @@ const Login = () => {
                 />
                 <label className="login-label" />
               </div>
+            
               <button className="login-button">Sign Up</button>
             </form>
           </div>
