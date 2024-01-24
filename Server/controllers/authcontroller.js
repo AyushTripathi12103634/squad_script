@@ -3,7 +3,7 @@ import { hashPassword, comparePassword } from "../helpers/authhelper.js";
 import JWT from "jsonwebtoken";
 export const registerController = async (req, res) => {
     try {
-        const { username, name, email, password, phone } = req.body;
+        const { username, name, email, password } = req.body;
         if (!username) {
             return res.status(400).send({
                 success: false,
@@ -26,12 +26,6 @@ export const registerController = async (req, res) => {
             return res.status(400).send({
                 success: false,
                 message: "Password is required"
-            });
-        }
-        if (!phone) {
-            return res.status(400).send({
-                success: false,
-                message: "Phone number is required",
             });
         }
 
@@ -57,7 +51,6 @@ export const registerController = async (req, res) => {
             const user = await new usermodel({
                 name: name,
                 email: email,
-                phone: phone,
                 username: username,
                 password: hashed_password,
             }).save();
@@ -118,7 +111,6 @@ export const loginController = async (req, res) => {
                     username: user.username,
                     name: user.name,
                     email: user.email,
-                    phone: user.phone,
                 },
                 token
             })
