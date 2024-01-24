@@ -114,11 +114,11 @@
 
 }
 
-.login-input:focus~.login-label {
+/* .login-input:focus~.login-label {
     width: 100%;
 
 
-}
+} */
 
 .login-link {
     color: #333;

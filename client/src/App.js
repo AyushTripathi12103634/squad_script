@@ -15,7 +15,7 @@ function App() {
       <Route path="/profile" element={<Profile />} />
       <Route path="/join" element={<Join />} />
       <Route path="/about" element={<About />} />
-      <Route path="/meeting" element={<Meeting />} />
+      <Route path="/meeting/:meet_id" element={<Meeting />} />
     </Routes>
     </BrowserRouter>
     );
