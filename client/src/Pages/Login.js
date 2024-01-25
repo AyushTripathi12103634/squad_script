@@ -4,8 +4,9 @@ import "./Login.css";
 import { Link } from "react-router-dom";
 import Footer from "../component/Footer";
 import axios from "axios";
-import { AiFillTwitterCircle } from "react-icons/ai";
-
+import { BiLogoGoogle } from "react-icons/bi";
+import { BiLogoFacebook } from "react-icons/bi";
+import { BiLogoLinkedin } from "react-icons/bi";
 
 const Login = () => {
   // const [name,setname]
@@ -56,14 +57,13 @@ const Login = () => {
     }
   };
 
-
-  const handleloginemail =(e)=>{
+  const handleloginemail = (e) => {
     setloginemail(e.target.value);
-  }
+  };
 
-  const handleloginpassword=(e)=>{
+  const handleloginpassword = (e) => {
     setloginpassword(e.target.value);
-  }
+  };
 
   const handlelogindetails = async (e) => {
     e.preventDefault();
@@ -71,7 +71,6 @@ const Login = () => {
       const response = await axios.post(
         "http://localhost:5000/api/v1/auth/login",
         {
-          
           email: loginemail,
           password: loginpassword,
         }
@@ -118,17 +117,11 @@ const Login = () => {
         >
           <div className="login-form-container sign-up-container">
             <form className="login-form" action="#">
-              <h1 classname="login-h1">Create Account</h1>
+              <h1 className="login-h1">Create Account</h1>
               <div className="login-social-container">
-                <Link className="login-link login-social">
-                  <i className="fab fa-facebook-f" />
-                </Link>
-                <Link className="login-link login-social">
-                  <i className="fab fa-google-plus-g" />
-                </Link>
-                <Link className="login-link login-social">
-                  <i className="fab fa-linkedin-in" />
-                </Link>
+                <BiLogoLinkedin className="login-App-logo" />
+                <BiLogoGoogle className="login-App-logo" />
+                <BiLogoFacebook className="login-App-logo" />
               </div>
               <span className="login-span">
                 or use your email for registration
@@ -161,7 +154,6 @@ const Login = () => {
                   name="email"
                   onChange={handleregisteremail}
                   value={registeremail}
-                  
                 />
                 <label className="login-label" />
               </div>
@@ -183,17 +175,13 @@ const Login = () => {
           </div>
           <div className="login-form-container sign-in-container">
             <form className="login-form" action="#">
-              <h1 classname="login-h1">Sign in</h1>
+              <h1 className="login-h1">Sign in</h1>
               <div className="login-social-container">
-                <Link className="login-link login-social">
-                  <i className="fab fa-facebook-f" />
-                </Link>
-                <Link className="login-link login-social">
-                  <i className="fab fa-google-plus-g" />
-                </Link>
-                <Link className="login-link login-social">
-                  <i className="fab fa-linkedin-in" />
-                </Link>
+              <div className="login-social-container">
+                <BiLogoLinkedin className="login-App-logo" />
+                <BiLogoGoogle className="login-App-logo" />
+                <BiLogoFacebook className="login-App-logo" />
+              </div>
               </div>
               <span className="login-span">or use your account</span>
               <div className="login-infield">
@@ -220,7 +208,9 @@ const Login = () => {
               <Link className="login-link login-forgot">
                 Forgot your password?
               </Link>
-              <button className="login-button" onClick={handlelogindetails}>Sign In</button>
+              <button className="login-button" onClick={handlelogindetails}>
+                Sign In
+              </button>
             </form>
           </div>
           <div
@@ -230,14 +220,14 @@ const Login = () => {
           >
             <div className="login-overlay">
               <div className="login-overlay-panel login-overlay-left">
-                <h1 classname="login-h1">Welcome Back!</h1>
+                <h1 className="login-h1">Welcome Back!</h1>
                 <p className="login-p">
                   To keep connected with us please login with your personal info
                 </p>
                 <button className="login-button">Sign In</button>
               </div>
               <div className="login-overlay-panel login-overlay-right">
-                <h1 classname="login-h1">Hello, Friend!</h1>
+                <h1 className="login-h1">Hello, Friend!</h1>
                 <p className="login-p">
                   Enter your personal details and start journey with us
                 </p>
