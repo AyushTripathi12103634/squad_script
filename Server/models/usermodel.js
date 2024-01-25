@@ -20,6 +20,14 @@ const userschema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    otp: {
+      type: Number,
+    },
+    isVerified: {
+      type: Boolean,
+      required: true,
+      default:false,
+    },
   },
   {
     timestamps: true,
