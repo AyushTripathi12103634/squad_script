@@ -6,6 +6,7 @@ import Join from './Pages/Join';
 import Profile from './Pages/Profile';
 import Meeting from './Pages/Meeting';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import ForgotPassword from './Pages/ForgotPassword';
 function App() {
   return (
     <BrowserRouter>
@@ -15,6 +16,7 @@ function App() {
       <Route path="/profile" element={<Profile />} />
       <Route path="/join" element={<Join />} />
       <Route path="/about" element={<About />} />
+      <Route path="/forgotpassword" element={<ForgotPassword />} />
       <Route path="/meeting/:meet_id" element={<Meeting />} />
     </Routes>
     </BrowserRouter>

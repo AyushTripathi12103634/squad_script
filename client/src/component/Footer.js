@@ -6,7 +6,7 @@ const Footer = () => {
     <div className="footer mt-auto footer-main">
       <div className="container">
         <h2 className="text-center" style={{fontSize:'20px',paddingTop:'15px'}}>All Right Reserved &copy; CoffeeCoders</h2>
-        <p className="text-center mt-3">
+        <p className="text-center mt-3 mb-0">
           <Link className="footer-links" to="/about">About</Link> | <Link className="footer-links" to="/contact">Contact</Link> |{" "}
           <Link className="footer-links" to="/policy">Privacy Policy</Link>
         </p>
