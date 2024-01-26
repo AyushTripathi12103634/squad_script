@@ -320,9 +320,10 @@ export const getpasswordcontroller = async (req, res) => {
 export const changepasswordcontroller = async (req, res) => {
     try {
         const { email, password } = req.body;
-        const user = usermodel.findOne({ email });
+        const user = await usermodel.findOne({ email });
         if (user) {
             var result = await comparePassword(password, user.password);
+            console.log(result);
             if (result) {
                 return res.status(200).send({
                     success: true,
@@ -359,7 +360,7 @@ export const verifychangepasswordcontroller = async (req, res) => {
             const user = await usermodel.findOne({ email });
             if (user) {
                 if (newPassword === confirmPassword) {
-                    const hashed_password = await hashPassword(password);
+                    const hashed_password = await hashPassword(newPassword);
                     user.password = hashed_password;
                     user.otp = null;
                     user.save();
