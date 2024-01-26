@@ -4,9 +4,7 @@ import "./Login.css";
 import { Link } from "react-router-dom";
 import Footer from "../component/Footer";
 import axios from "axios";
-import { BiLogoGoogle } from "react-icons/bi";
-import { BiLogoFacebook } from "react-icons/bi";
-import { BiLogoLinkedin } from "react-icons/bi";
+import { BiLogoGoogle, BiLogoMicrosoft, BiLogoFacebook } from "react-icons/bi";
 
 const Login = () => {
   // const [name,setname]
@@ -119,7 +117,7 @@ const Login = () => {
             <form className="login-form" action="#">
               <h1 className="login-h1">Create Account</h1>
               <div className="login-social-container">
-                <BiLogoLinkedin className="login-App-logo" />
+                <BiLogoMicrosoft className="login-App-logo" />
                 <BiLogoGoogle className="login-App-logo" />
                 <BiLogoFacebook className="login-App-logo" />
               </div>
@@ -178,7 +176,7 @@ const Login = () => {
               <h1 className="login-h1">Sign in</h1>
               <div className="login-social-container">
               <div className="login-social-container">
-                <BiLogoLinkedin className="login-App-logo" />
+                <BiLogoMicrosoft className="login-App-logo" />
                 <BiLogoGoogle className="login-App-logo" />
                 <BiLogoFacebook className="login-App-logo" />
               </div>
@@ -205,7 +203,7 @@ const Login = () => {
                 />
                 <label className="login-label" />
               </div>
-              <Link className="login-link login-forgot">
+              <Link to="/forgotpassword" className="login-link login-forgot">
                 Forgot your password?
               </Link>
               <button className="login-button" onClick={handlelogindetails}>
