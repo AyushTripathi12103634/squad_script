@@ -5,6 +5,8 @@ import { BiLogoLinkedin } from "react-icons/bi";
 import { BiLogoGithub } from "react-icons/bi";
 import { IconContext } from 'react-icons';
 import { Link } from 'react-router-dom';
+import About1 from '../images/About1.png';
+import About2 from '../images/About2.png';
 function AboutUs() {
   return (
     <main className='about-main-section'>
@@ -13,10 +15,13 @@ function AboutUs() {
         <div className='about-main-left my-5 mx-3'>
           <div className='about-card'>
             <div className='about-card-image'>
-              <img src='' alt=''></img>
+              <img src={About1} alt='About1 image'></img>
             </div>
-            <div className='about-card-name'>
+            <div className='about-card-name my-3'>
               <h1>Ayush Tripathi</h1>
+            </div>
+            <div className='about-card-profile my-3'>
+              <h6>Full Stack Developer</h6>
             </div>
             <IconContext.Provider value={{color:"black"}}>
               <div className='about-card-icons'>
@@ -29,10 +34,13 @@ function AboutUs() {
         <div className='about-main-right my-5 mx-3'>
           <div className='about-card'>
             <div className='about-card-image'>
-              <img src='' alt=''></img>
+              <img src={About2} alt='About1 image'></img>
             </div>
-            <div className='about-card-name'>
+            <div className='about-card-name my-3'>
               <h1>Mohak Tiwari</h1>
+            </div>
+            <div className='about-card-profile my-3'>
+              <h6>Full Stack Developer</h6>
             </div>
             <IconContext.Provider value={{color:"black"}}>
               <div className='about-card-icons'>

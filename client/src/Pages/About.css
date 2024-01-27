@@ -46,3 +46,12 @@
     height: 40px;
     width: 40px;
 }
+.about-card-image img{
+    height: 200px;
+    width: 250px;
+    object-fit: contain;
+}
+.about-card-profile{
+    display: grid;
+    place-content: center;
+}
