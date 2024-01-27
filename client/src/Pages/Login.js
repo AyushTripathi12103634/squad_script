@@ -4,7 +4,7 @@ import "./Login.css";
 import { Link } from "react-router-dom";
 import Footer from "../component/Footer";
 import axios from "axios";
-import { BiLogoGoogle, BiLogoMicrosoft, BiLogoFacebook } from "react-icons/bi";
+import { jwtDecode  } from 'jwt-decode';
 
 const Login = () => {
   // const [name,setname]
@@ -37,7 +37,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/v1/auth/register",
+        "/api/v1/auth/register",
         {
           username: registerusername,
           name: registername,
@@ -67,7 +67,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/v1/auth/login",
+        "/api/v1/auth/login",
         {
           email: loginemail,
           password: loginpassword,
@@ -97,8 +97,7 @@ const Login = () => {
     };
 
     overlayBtn.addEventListener("click", handleClick);
-
-    // Clean up the event listener when the component unmounts
+    
     return () => {
       overlayBtn.removeEventListener("click", handleClick);
     };
@@ -116,14 +115,6 @@ const Login = () => {
           <div className="login-form-container sign-up-container">
             <form className="login-form" action="#">
               <h1 className="login-h1">Create Account</h1>
-              <div className="login-social-container">
-                <BiLogoMicrosoft className="login-App-logo" />
-                <BiLogoGoogle className="login-App-logo" />
-                <BiLogoFacebook className="login-App-logo" />
-              </div>
-              <span className="login-span">
-                or use your email for registration
-              </span>
               <div className="login-infield">
                 <input
                   className="login-input"
@@ -174,14 +165,6 @@ const Login = () => {
           <div className="login-form-container sign-in-container">
             <form className="login-form" action="#">
               <h1 className="login-h1">Sign in</h1>
-              <div className="login-social-container">
-              <div className="login-social-container">
-                <BiLogoMicrosoft className="login-App-logo" />
-                <BiLogoGoogle className="login-App-logo" />
-                <BiLogoFacebook className="login-App-logo" />
-              </div>
-              </div>
-              <span className="login-span">or use your account</span>
               <div className="login-infield">
                 <input
                   className="login-input"

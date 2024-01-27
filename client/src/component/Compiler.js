@@ -302,14 +302,14 @@ function Compiler() {
     e.preventDefault();
     setisTerminalOpen(false);
     try {
-      const response = await axios.post(`http://localhost:5000/api/v1/rapidapi/judge`, {
+      const response = await axios.post(`/api/v1/rapidapi/judge`, {
         "language_id": file.id,
         "source_code": fileContent,
         "stdin": stdin ? stdin : "",
       });
 
       const { token } = response.data;
-      const result = await axios.get(`http://localhost:5000/api/v1/rapidapi/judge/${token}`);
+      const result = await axios.get(`/api/v1/rapidapi/judge/${token}`);
       const { stdout, time, memory, stderr } = result.data;
       setoutput(stdout);
       setexecutiontime(time);
