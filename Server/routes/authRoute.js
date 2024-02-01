@@ -1,4 +1,6 @@
-import express from 'express'
+import express from 'express';
+import { requireSignIn } from '../middleware/authmiddleware.js';
+import requireSignIn from '../middleware/';
 import { forgotpasswordcontroller, loginController, mailcontroller, registerController, verifyotpcontroller, getpasswordcontroller,changepasswordcontroller, verifychangepasswordcontroller } from '../controllers/authcontroller.js';
 const router=express.Router();
 router.post("/register",registerController);
@@ -9,4 +11,5 @@ router.post("/forgotpassword",forgotpasswordcontroller);
 router.post("/recievepassword/:success",getpasswordcontroller);
 router.post("/changepassword",changepasswordcontroller);
 router.post("/verifychangepassword/:success",verifychangepasswordcontroller);
+router.post("/contact",requireSignIn,contactcontroller);
 export default router;
