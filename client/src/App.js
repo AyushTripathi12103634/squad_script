@@ -9,6 +9,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ForgotPassword from './Pages/ForgotPassword';
 import TNC from './Pages/TNC';
 import PrivacyPolicy from './Pages/PrivacyPolicy';
+import Contact from './Pages/Contact';
 function App() {
   return (
     <BrowserRouter>
@@ -21,6 +22,7 @@ function App() {
       <Route path="/forgotpassword" element={<ForgotPassword />} />
       <Route path="/meeting/:meet_id" element={<Meeting />} />
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+      <Route path="/contact" element={<Contact />} />
       <Route path="/tnc" element={<TNC />} />
     </Routes>
     </BrowserRouter>
