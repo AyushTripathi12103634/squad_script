@@ -391,3 +391,53 @@ export const verifychangepasswordcontroller = async (req, res) => {
         })
     }
 }
+export const contactcontroller = async(req,res) => {
+    try {
+        const {email,content,type} = req.body;
+        const transporter = nodemailer.createTransport({
+            host: "smtp.gmail.com",
+            port: 465,
+            secure: true,
+            auth: {
+                user: process.env.EMAIL,
+                pass: process.env.PASSWORD,
+            },
+        });
+
+        const mailoption = {
+            from: {
+                name: "Squad Script",
+                address: process.env.EMAIL,
+            },
+            to: [process.env.DEV1,process.env.DEV2],
+            subject: `Message from user ${email} from squad script`,
+            text: `Dear Developer,\nWe have recieved a contact message of type: ${type} from user: ${email}.\nThe message sent is as follows:\n${content}.\n \n Warm regards, \n SquadScript(SS)`,
+        };
+        const sendMail = async (transporter, mailoption) => {
+            try {
+                await transporter.sendMail(mailoption);
+                const user = await usermodel.findOne({ email });
+                if (user) {
+                    user.otp = otp;
+                    user.save();
+                }
+                return res.status(200).send({
+                    success: true,
+                    message: "email has been Sent",
+                });
+            } catch (error) {
+                return res.status(400).send({
+                    success: false,
+                    message: "Failed to send mail",
+                    error,
+                });
+            }
+        };
+        sendMail(transporter, mailoption);
+    } catch (error) {
+        return res.status(400).send({
+            success:false,
+            message: "eror in contact api"
+        })
+    }
+}
