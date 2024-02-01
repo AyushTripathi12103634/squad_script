@@ -447,7 +447,7 @@ export const islogincontroller = async(req,res) => {
         const {token} = req.params;
         const {name,email,username,isVerified} = req.body;
         const user = await usermodel.findOne({ id:decode(token) });
-        if(!name || !email || !username || !isVerified) {
+        if(name === undefined && email === undefined && username === undefined) {
             return res.status(200).send({
                 success:true,
                 message:"user found successfully",
@@ -469,7 +469,8 @@ export const islogincontroller = async(req,res) => {
     } catch (error) {
         return res.status(400).send({
             success:false,
-            message:"error in islogin api"
+            message:"error in islogin api",
+            error
         })
     }
 }
