@@ -1,7 +1,6 @@
 import express from 'express';
 import { requireSignIn } from '../middleware/authmiddleware.js';
-import requireSignIn from '../middleware/';
-import { forgotpasswordcontroller, loginController, mailcontroller, registerController, verifyotpcontroller, getpasswordcontroller,changepasswordcontroller, verifychangepasswordcontroller } from '../controllers/authcontroller.js';
+import { forgotpasswordcontroller, loginController, mailcontroller, registerController, verifyotpcontroller, getpasswordcontroller,changepasswordcontroller, verifychangepasswordcontroller, contactcontroller } from '../controllers/authcontroller.js';
 const router=express.Router();
 router.post("/register",registerController);
 router.post("/login",loginController);
