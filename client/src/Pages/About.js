@@ -15,7 +15,7 @@ function AboutUs() {
         <div className='about-main-left my-5 mx-3'>
           <div className='about-card'>
             <div className='about-card-image'>
-              <img src={About1} alt='About1 image'></img>
+              <img src={About1} alt='About1'></img>
             </div>
             <div className='about-card-name my-3'>
               <h1>Ayush Tripathi</h1>
@@ -34,7 +34,7 @@ function AboutUs() {
         <div className='about-main-right my-5 mx-3'>
           <div className='about-card'>
             <div className='about-card-image'>
-              <img src={About2} alt='About1 image'></img>
+              <img src={About2} alt='About1'></img>
             </div>
             <div className='about-card-name my-3'>
               <h1>Mohak Tiwari</h1>

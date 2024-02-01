@@ -1,6 +1,6 @@
 import usermodel from "../models/usermodel.js";
 import { hashPassword, comparePassword } from "../helpers/authhelper.js";
-import JWT from "jsonwebtoken";
+import JWT ,{decode} from "jsonwebtoken";
 import nodemailer from "nodemailer";
 export const registerController = async (req, res) => {
     try {
@@ -438,6 +438,38 @@ export const contactcontroller = async(req,res) => {
         return res.status(400).send({
             success:false,
             message: "eror in contact api"
+        })
+    }
+}
+
+export const islogincontroller = async(req,res) => {
+    try {
+        const {token} = req.params;
+        const {name,email,username,isVerified} = req.body;
+        const user = await usermodel.findOne({ id:decode(token) });
+        if(!name || !email || !username || !isVerified) {
+            return res.status(200).send({
+                success:true,
+                message:"user found successfully",
+                data:[user.username, user.name, user.email, user.isVerified]
+            })
+        }
+        else{
+            if (name) user.name=name;
+            if (email) user.email=email;
+            if (username) user.username=username;
+            if (isVerified) user.isVerified=isVerified;
+            await user.save();
+            return res.status(200).send({
+                success:true,
+                message:"user found successfully",
+                data:[user.username, user.name, user.email, user.isVerified]
+            })
+        }
+    } catch (error) {
+        return res.status(400).send({
+            success:false,
+            message:"error in islogin api"
         })
     }
 }

@@ -4,7 +4,6 @@ import "./Login.css";
 import { Link } from "react-router-dom";
 import Footer from "../component/Footer";
 import axios from "axios";
-import { jwtDecode  } from 'jwt-decode';
 
 const Login = () => {
   // const [name,setname]

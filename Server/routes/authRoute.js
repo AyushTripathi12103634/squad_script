@@ -1,6 +1,6 @@
 import express from 'express';
 import { requireSignIn } from '../middleware/authmiddleware.js';
-import { forgotpasswordcontroller, loginController, mailcontroller, registerController, verifyotpcontroller, getpasswordcontroller,changepasswordcontroller, verifychangepasswordcontroller, contactcontroller } from '../controllers/authcontroller.js';
+import { forgotpasswordcontroller, loginController, mailcontroller, registerController, verifyotpcontroller, getpasswordcontroller,changepasswordcontroller, verifychangepasswordcontroller, contactcontroller, islogincontroller } from '../controllers/authcontroller.js';
 const router=express.Router();
 router.post("/register",registerController);
 router.post("/login",loginController);
@@ -11,4 +11,5 @@ router.post("/recievepassword/:success",requireSignIn,getpasswordcontroller);
 router.post("/changepassword",requireSignIn,changepasswordcontroller);
 router.post("/verifychangepassword/:success",requireSignIn,verifychangepasswordcontroller);
 router.post("/contact",requireSignIn,contactcontroller);
+router.post("/islogin",islogincontroller);
 export default router;
