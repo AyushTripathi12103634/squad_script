@@ -10,11 +10,13 @@ import ForgotPassword from './Pages/ForgotPassword';
 import TNC from './Pages/TNC';
 import PrivacyPolicy from './Pages/PrivacyPolicy';
 import Contact from './Pages/Contact';
+import Landing from './Pages/Landing';
 function App() {
   return (
     <BrowserRouter>
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<Landing />} />
+      <Route path="/home" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/join" element={<Join />} />
