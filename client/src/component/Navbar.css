@@ -158,6 +158,61 @@ transition: all .50s ease;
 }
 
 
+@media (max-width: 1280px){
+    header{
+        padding: 14px 2%;
+        transition: .2s;
+
+    }
+
+    .Navbar a{
+       padding: 5px;
+       margin: 0px 20px;
+
+    }
+}
+
+@media (max-width: 1280px){
+  #Navbar-menu-icon{
+    display: block;
+  }
+
+  .Navbar{
+    position: absolute;
+    top: 15%;
+    right: -100%;
+    width: 270px;
+    height: auto;
+    background: var(--main-color);
+    flex-direction: column;
+    justify-content: flex-start;
+    border-radius: 10px;
+    transition: all .50s ease;
+
+  }
+
+  .Navbar a{
+    display: block;
+    margin: 12px 0;
+    padding: 0px 25px;
+    transition: all .50s ease;
+
+  }
+
+  .Navbar a:hover{
+    color: var(--text-color);
+    transform: translateY(5px);
+  }
+  .Navbar a.active{
+    color: var(--text-color);
+  }
+
+  .Navbar.open{
+    right: 2%;
+  }
+}
+
+
 
 
 
