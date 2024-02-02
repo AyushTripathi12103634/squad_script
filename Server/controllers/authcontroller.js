@@ -114,6 +114,7 @@ export const loginController = async (req, res) => {
                     username: user.username,
                     name: user.name,
                     email: user.email,
+                    isVerified: user.isVerified,
                 },
                 token,
             });

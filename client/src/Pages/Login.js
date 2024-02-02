@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Navbar from "../component/Navbar";
 import "./Login.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Footer from "../component/Footer";
 import axios from "axios";
 
@@ -15,6 +15,9 @@ const Login = () => {
   const [registerpassword, setregisterpassword] = useState("");
   const [loginemail, setloginemail] = useState("");
   const [loginpassword, setloginpassword] = useState("");
+  const [islogin, setislogin] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleregistername = (e) => {
     setregistername(e.target.value);
@@ -65,7 +68,7 @@ const Login = () => {
   const handlelogindetails = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
+      const res = await axios.post(
         "/api/v1/auth/login",
         {
           email: loginemail,
@@ -73,9 +76,14 @@ const Login = () => {
         }
       );
 
-      const t = response.data;
+      const t = res.data;
       if (t.success) {
-        console.log(t.user);
+        localStorage.setItem("auth",t.token);
+        localStorage.setItem("name",t.user.name);
+        localStorage.setItem("username",t.user.username);
+        localStorage.setItem("email",t.user.email);
+        localStorage.setItem("isVerified",String(t.user.isVerified));
+        navigate("/home");
       }
     } catch (e) {
       console.log(e);
@@ -101,6 +109,43 @@ const Login = () => {
       overlayBtn.removeEventListener("click", handleClick);
     };
   }, []);
+
+  const checkislogin = async (e) => {
+    try{
+      if (localStorage.getItem("auth")===""){
+        setislogin(false);
+      }
+      else{
+        const headers = {
+          "Authorization":localStorage.getItem("auth")
+        }
+        const response = await axios.post("/api/v1/auth/islogin",{},{headers:headers});
+        setislogin(response.data.success);
+      }
+    }
+    catch(error){
+      setislogin(false);
+    }
+  }
+
+  useEffect(()=>{
+    const token = localStorage.getItem("auth");
+    const name = localStorage.getItem("name");
+    const email = localStorage.getItem("email");
+    const username = localStorage.getItem("username");
+    const isVerified = localStorage.getItem("isVerified");
+    localStorage.setItem("auth",token?token:"");
+    localStorage.setItem("name",name?name:"");
+    localStorage.setItem("username",username?username:"");
+    localStorage.setItem("email",email?email:"");
+    localStorage.setItem("isVerified",isVerified?isVerified:"");
+    checkislogin();
+  },[]);
+
+  if (islogin) {
+    navigate("/home");
+  }
+
   return (
     <main className="login-main-section">
       <Navbar />
