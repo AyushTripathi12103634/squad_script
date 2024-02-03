@@ -1,44 +1,72 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "./Navbar.css";
+import { CodeIcon, HamburgetMenuClose, HamburgetMenuOpen } from "./Icons";
 import SSLogo from "../images/SquadScript.png";
 
-const Navbar = () => {
-  const [open, setOpen] = useState(false);
+function NavBar() {
+  const [click, setClick] = useState(false);
 
-  const handleClick = () => {
-    setOpen(!open);
-  };
-
+  const handleClick = () => setClick(!click);
   return (
     <>
-      <div className='Navbar-header px-5 py-3'>
-        <Link className="navbar-brand" to="/"><img src={SSLogo} alt=""></img></Link>
-        <ul className={`Navbar ${open ? 'open' : ''}`}>
-          <li>
-            <Link to="/home">Home</Link>
-          </li>
-          <li>
-            <Link to="/about">About us</Link>
-          </li>
-          <li>
-            <Link to="/contact">Contact Us</Link>
-          </li>
-          <li>
-            <Link to="/join">Join</Link>
-          </li>
-        </ul>
+      <nav className="navbar">
+        <div className="nav-container">
+          <NavLink to="/" className="nav-logo">
+          <img src={SSLogo} alt="/"></img>
+            {/* <i className="fas fa-code"></i> */}
+           
+           
+          </NavLink>
 
-        <div className="Navbar-main">
-          <Link to="/login" className="Navbar-user">
-            <i className="ri-user-fill" />
-            Sign In / Register
-          </Link>
-          <div className={`bx bx-menu ${open ? 'bx-x' : ''}`} id="Navbar-menu-icon" onClick={handleClick} />
+          <ul className={click ? "nav-menu active" : "nav-menu"}>
+            <li className="nav-item">
+              <NavLink to="/" className="nav-links" onClick={handleClick}>
+                Home
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink to="/about" className="nav-links" onClick={handleClick}>
+                About
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink to="/join" className="nav-links" onClick={handleClick}>
+                Join
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink
+                to="/contact"
+                className="nav-links"
+                onClick={handleClick}
+              >
+                Contact Us
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink to="/profile" className="nav-links" onClick={handleClick}>
+               Profile
+              </NavLink>
+            </li>
+          </ul>
+          <div className="nav-icon" onClick={handleClick}>
+            {/* <i className={click ? "fas fa-times" : "fas fa-bars"}></i> */}
+
+            {click ? (
+              <span className="icon">
+                <HamburgetMenuOpen />{" "}
+              </span>
+            ) : (
+              <span className="icon">
+                <HamburgetMenuClose />
+              </span>
+            )}
+          </div>
         </div>
-      </div>
+      </nav>
     </>
   );
-};
+}
 
-export default Navbar;
+export default NavBar;
