@@ -24,3 +24,15 @@
     display: flex;
     justify-content: center;
 }
+@media (max-width: 576px){
+    .contact-content{
+        height: 500px;
+        width: 400px;
+    }
+}
+@media (max-width: 414px){
+    .contact-content{
+        height: 500px;
+        width: 350px;
+    }
+}
