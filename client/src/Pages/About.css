@@ -55,3 +55,27 @@
     display: grid;
     place-content: center;
 }
+
+@media (max-width: 768px){
+    .about-main-div{
+        flex-direction: column;
+    }
+}
+@media (max-width: 414px){
+    .about-main-right, .about-main-left {
+        height: 400px;
+        width: 300px;
+    }
+    .about-card-name{
+        position: relative;
+        left: 30px;
+    }
+    .about-card-profile{
+        position: relative;
+        left: 10px;
+    }
+    .about-card-icons{
+        position: relative;
+        left: 10px;
+    }
+}
