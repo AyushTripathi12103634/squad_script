@@ -370,8 +370,12 @@ const Compiler = (props) => {
   const socketRef = useRef();
 
     useEffect(() => {
-        const serverurl = process.env.REACT_APP_SERVER_URL ||  'http://localhost:5000'
+      const serverurl = process.env.SEVRER_URL || 'http://localhost:5000';
         socketRef.current = io.connect(serverurl);
+
+        socketRef.current.on('connect_error', () => {
+          window.location.reload();
+      });
 
         socketRef.current.emit('join room', room);
 

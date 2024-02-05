@@ -18,7 +18,7 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: process.env.CLIENT_URL || "http://localhost:3000",
+    origin: process.env.SEVRER_URL || "http://localhost:3000",
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -29,10 +29,11 @@ io.on('connection', (socket) => {
 
   socket.on('join room', (room) => {
       socket.join(room);
+      console.log(`User ${socket.id} joined room ${room}`);
   });
 
   socket.on('code', (data) => {
-      socket.to(data.room).emit('text change', data.text);
+      socket.to(data.room).emit('code', data.text);
   });
 
   socket.on('disconnect', () => {
