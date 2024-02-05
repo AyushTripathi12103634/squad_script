@@ -15,7 +15,7 @@ const Meeting = () => {
   return (
     <main className='meeting-main-section'>
     <Navbar />
-    <Compiler />
+    <Compiler room={id} />
     <Footer />
     </main>
   )

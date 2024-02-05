@@ -1,12 +1,12 @@
-import { React, useState, useRef, useEffect } from 'react';
+import { React, useState, useRef, useEffect, useMemo } from 'react';
 import axios from "axios";
 import Editor from '@monaco-editor/react';
 import './Compiler.css'
 import { saveAs } from 'file-saver';
 import { Bounce, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-function Compiler() {
+import { io } from "socket.io-client";
+const Compiler = (props) => {
 
   const files = {
     'C# (Mono 6.6.0.161)': {
@@ -313,6 +313,7 @@ function Compiler() {
         theme: "dark",
         transition: Bounce,
       });
+      socketRef.current.emit('code', { room, text: fileContent });
     } else {
       console.log('No file selected');
     }
@@ -327,16 +328,16 @@ function Compiler() {
     setisTerminalOpen(false);
     try {
       const headers = {
-        "authorization":localStorage.getItem("auth")
+        "authorization": localStorage.getItem("auth")
       }
       const response = await axios.post(`/api/v1/rapidapi/judge`, {
         "language_id": file.id,
         "source_code": fileContent,
         "stdin": stdin ? stdin : "",
-      },{headers:headers});
+      }, { headers: headers });
 
       const { token } = response.data;
-      const result = await axios.get(`/api/v1/rapidapi/judge/${token}`,{headers:headers});
+      const result = await axios.get(`/api/v1/rapidapi/judge/${token}`, { headers: headers });
       const { stdout, time, memory, stderr } = result.data;
       toast.success('Code Submitted', {
         position: "top-right",
@@ -360,10 +361,33 @@ function Compiler() {
       console.log(e);
     }
   }
-useEffect(() => {
-        console.log('State updated:', output, executiontime, executionspace, executionerror);
-      }, [output, executiontime, executionspace, executionerror]);
+  useEffect(() => {
+    console.log('State updated:', output, executiontime, executionspace, executionerror);
+  }, [output, executiontime, executionspace, executionerror]);
 
+  const room = props.room;
+
+  const socketRef = useRef();
+
+    useEffect(() => {
+        const serverurl = process.env.REACT_APP_SERVER_URL ||  'http://localhost:5000'
+        socketRef.current = io.connect(serverurl);
+
+        socketRef.current.emit('join room', room);
+
+        socketRef.current.on('code', (text) => {
+            setFileContent(text);
+        });
+
+        return () => {
+            socketRef.current.disconnect();
+        };
+    }, [room]);
+
+    const handleTextChange = (value,event) => {
+        setFileContent(value);
+        socketRef.current.emit('code', { room, text: value });
+    };
   return (
     <>
 
@@ -390,7 +414,7 @@ useEffect(() => {
             language={file.editor_name}
             value={fileContent}
             onMount={handleEditorDidMount}
-            onChange={(value, event) => setFileContent(value)}
+            onChange={handleTextChange}
             options={{
               "acceptSuggestionOnCommitCharacter": true,
               "acceptSuggestionOnEnter": "on",
