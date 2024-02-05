@@ -1,6 +1,5 @@
 import './App.css';
 import Login from './Pages/Login';
-import Home from './Pages/Home';
 import About from './Pages/About';
 import Join from './Pages/Join';
 import Profile from './Pages/Profile';
@@ -15,8 +14,7 @@ function App() {
   return (
     <BrowserRouter>
     <Routes>
-      <Route path="/" element={<Landing />} />
-      <Route path="/home" element={<Home />} />
+      <Route path="/home" element={<Landing />} />
       <Route path="/login" element={<Login />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/join" element={<Join />} />

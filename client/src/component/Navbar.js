@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import "./Navbar.css";
 import { CodeIcon, HamburgetMenuClose, HamburgetMenuOpen } from "./Icons";
@@ -6,13 +6,18 @@ import SSLogo from "../images/SquadScript.png";
 
 function NavBar() {
   const [click, setClick] = useState(false);
+  const [username,setusername] = useState("");
+
+  useEffect(() =>{
+    setusername(localStorage.getItem("username"))
+  },[])
 
   const handleClick = () => setClick(!click);
   return (
     <>
       <nav className="navbar">
         <div className="nav-container">
-          <NavLink to="/" className="nav-logo">
+          <NavLink to="/Home" className="nav-logo">
           <img src={SSLogo} alt="/"></img>
             {/* <i className="fas fa-code"></i> */}
            
@@ -21,7 +26,7 @@ function NavBar() {
 
           <ul className={click ? "nav-menu active" : "nav-menu"}>
             <li className="nav-item">
-              <NavLink to="/" className="nav-links" onClick={handleClick}>
+              <NavLink to="/Home" className="nav-links" onClick={handleClick}>
                 Home
               </NavLink>
             </li>
@@ -45,9 +50,19 @@ function NavBar() {
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink to="/profile" className="nav-links" onClick={handleClick}>
-               Profile
-              </NavLink>
+              {username?(
+                <>
+                  <NavLink to="/profile" className="nav-links" onClick={handleClick}>
+                  {username}
+                  </NavLink>
+                </>
+              ):(
+                <>
+                  <NavLink to="/login" className="nav-links" onClick={handleClick}>
+                  Login
+                  </NavLink>
+                </>
+              )}
             </li>
           </ul>
           <div className="nav-icon" onClick={handleClick}>
