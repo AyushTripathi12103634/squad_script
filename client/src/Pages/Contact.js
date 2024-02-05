@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import './Contact.css';
 import { useState } from 'react';
 import axios from 'axios';
+import { Bounce, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const Contact = () => {
     const [email, setemail] = useState("");
     const [content, setcontent] = useState('');
@@ -24,22 +26,67 @@ const Contact = () => {
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (check && email.endsWith("@gmail.com") && type !== "default") {
+        if (check && email.endsWith("@gmail.com")) {
+            const header = {
+                "authorization": localStorage.getItem("auth")
+            }
             const response = await axios.post("/api/v1/auth/contact", {
                 email: email,
                 content: content,
                 type: type,
-            })
-            console.log(response.data);
+            },{headers:header})
+            if (response.data.success){
+                toast.success('Message sent!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    transition: Bounce,
+                });
+            }
+            else{
+                toast.error('Failed to Send Message. Try again or contact admin', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    transition: Bounce,
+                });
+            }
         }
         else if (check && !email.endsWith("@gmail.com")) {
-            console.log("Enter a valid email address");
-        }
-        else if (check && type === "default") {
-            console.log("Select type of message");
+            toast.warning('Enter correct gmail', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+                transition: Bounce,
+            });
         }
         else {
-            console.log("Check the terms and conditions to send the message")
+            toast.warning('Accept the Terms and Conditions', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+                transition: Bounce,
+            });
         }
     }
     return (

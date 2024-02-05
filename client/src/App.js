@@ -10,8 +10,11 @@ import TNC from './Pages/TNC';
 import PrivacyPolicy from './Pages/PrivacyPolicy';
 import Contact from './Pages/Contact';
 import Landing from './Pages/Landing';
+import { ToastContainer } from 'react-toastify';
+
 function App() {
   return (
+    <>
     <BrowserRouter>
     <Routes>
       <Route path="/home" element={<Landing />} />
@@ -26,6 +29,20 @@ function App() {
       <Route path="/tnc" element={<TNC />} />
     </Routes>
     </BrowserRouter>
+    <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        transition="Bounce"
+      />
+    </>
     );
 }
 

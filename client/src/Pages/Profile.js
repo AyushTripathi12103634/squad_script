@@ -4,6 +4,8 @@ import Footer from '../component/Footer';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { Bounce, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function Profile() {
   const [name, setname] = useState("");
   const [email, setemail] = useState("");
@@ -26,6 +28,17 @@ function Profile() {
     localStorage.setItem("email", "");
     localStorage.setItem("username", "");
     localStorage.setItem("isVerified", "");
+    toast.success('Logged Out', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      transition: Bounce,
+    });
     navigate('/login');
   }
 
@@ -38,17 +51,37 @@ function Profile() {
       "Authorization": localStorage.getItem("auth")
     }
     const response = await axios.post("/api/v1/auth/islogin", {
-      name, email, username, isverified
+      name, email, username
     }, { headers: headers })
-    if (response.data.success){
+    if (response.data.success) {
       localStorage.setItem("name", response.data.data[1]);
       localStorage.setItem("email", response.data.data[2]);
       localStorage.setItem("username", response.data.data[0]);
       localStorage.setItem("isVerified", response.data.data[3]);
-      alert("Details Updated Successfully");
+      toast.success('User Details Updated successfully', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
     }
-    else{
-      alert("Error in updating details. Please contact administrators for further instructions.");
+    else {
+      toast.error("Details updation failed. Try again or contact admin", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
     }
   }
 
@@ -56,16 +89,26 @@ function Profile() {
     setter(e.target.innerText);
   };
 
-  const handledelete = async(e) => {
+  const handledelete = async (e) => {
     let conf = window.confirm('Are you sure to delete your account? This action cannot be reversed');
-    if (conf){
+    if (conf) {
       const headers = {
         "Authorization": localStorage.getItem("auth")
       }
       console.log(headers);
-      const response = await axios.post("/api/v1/auth/deleteuser",{}, {headers:headers});
-      if (response.data.success){
-        alert("Profile deleted successfully");
+      const response = await axios.post("/api/v1/auth/deleteuser", {}, { headers: headers });
+      if (response.data.success) {
+        toast.success('User Deleted successfully', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Bounce,
+        });
         localStorage.setItem("auth", "");
         localStorage.setItem("name", "");
         localStorage.setItem("email", "");
@@ -73,26 +116,59 @@ function Profile() {
         localStorage.setItem("isVerified", "");
         navigate('/login');
       }
+      else{
+        toast.error('Failed to Delete User. Try again or contact admin', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Bounce,
+        });
+      }
     }
   }
 
-  const verifyuser = async(e) => {
+  const verifyuser = async (e) => {
     try {
       const headers = {
         "Authorization": localStorage.getItem("auth")
       }
-      const response = await axios.post("/api/v1/auth/sendotp",{email},{headers:headers});
-      if (response.data.success){
+      const response = await axios.post("/api/v1/auth/sendotp", { email }, { headers: headers });
+      if (response.data.success) {
         const otp = prompt("Enter OTP");
-        const res = await axios.post("/api/v1/auth/verifyotp",{email,otp},{headers:headers});
-        if (res.data.success){
-          localStorage.setItem("isVerified","true");
+        const res = await axios.post("/api/v1/auth/verifyotp", { email, otp }, { headers: headers });
+        if (res.data.success) {
+          localStorage.setItem("isVerified", "true");
           setisverified("true");
-          console.log(isverified,res.data);
-          alert("Account Verification Successful!");
+          console.log(isverified, res.data);
+          toast.success('User Verification Successful', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            transition: Bounce,
+          });
         }
-        else{
-          alert("Account Verification Failed! Try again or Contact the administrator");
+        else {
+          toast.error('Failed to Verify User. Try again or contact admin', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            transition: Bounce,
+          });
         }
       }
     } catch (error) {
@@ -118,9 +194,9 @@ function Profile() {
               </div>
               <div className='profile-isVerified mt-2 d-flex'>
                 <h3>Verified: {isverified}</h3>
-                {isverified==="true"?(
+                {isverified === "true" ? (
                   <button className='btn btn-dark ms-4' disabled>Verified</button>
-                ):(
+                ) : (
                   <button className='btn btn-dark ms-4' onClick={verifyuser}>Verify</button>
                 )}
               </div>
@@ -143,9 +219,9 @@ function Profile() {
               </div>
               <div className='profile-isVerified mt-2 d-flex'>
                 <h3>Verified: {isverified}</h3>
-                {isverified==="true"?(
+                {isverified === "true" ? (
                   <button className='btn btn-dark ms-4' disabled>Verified</button>
-                ):(
+                ) : (
                   <button className='btn btn-dark ms-4' onClick={verifyuser}>Verify</button>
                 )}
               </div>

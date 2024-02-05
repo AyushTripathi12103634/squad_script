@@ -4,6 +4,8 @@ import Navbar from '../component/Navbar';
 import './Join.css';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Bounce, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function Join() {
   const [meetid, setmeetid] = useState("");
   const navigate = useNavigate();
@@ -12,18 +14,68 @@ function Join() {
   }
   const join = async (e) => {
     e.preventDefault();
-    const headers = {
-      "Authorization": localStorage.getItem("auth")
+    if (meetid === "") {
+      toast.error('Meeting ID is required', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
     }
-    const response = await axios.post(`/api/v1/meet/joinmeet/${meetid}`,{},{headers:headers});
-    navigate(`/meeting/${response.data.meet_id}`);
+    else {
+      const headers = {
+        "Authorization": localStorage.getItem("auth")
+      }
+      const response = await axios.post(`/api/v1/meet/joinmeet/${meetid}`, {}, { headers: headers });
+      toast.success('Joined meeting', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
+      navigate(`/meeting/${response.data.meet_id}`);
+    }
   }
   const create = async (e) => {
     e.preventDefault();
     const headers = {
       "Authorization": localStorage.getItem("auth")
     }
-    const response = await axios.post("/api/v1/meet/createmeet",{},{headers:headers});
+    const response = await axios.post("/api/v1/meet/createmeet", {}, { headers: headers });
+    if (response.data.success)
+    toast.success('Meeting created successfully', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      transition: Bounce,
+    });
+    else
+    toast.error('Failed to Create meeting. Try again or contact admin', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      transition: Bounce,
+    });
     navigate(`/meeting/${response.data.meeting_id}`);
   }
   return (
