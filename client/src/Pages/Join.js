@@ -12,12 +12,18 @@ function Join() {
   }
   const join = async (e) => {
     e.preventDefault();
-    const response = await axios.post(`/api/v1/meet/joinmeet/${meetid}`);
+    const headers = {
+      "Authorization": localStorage.getItem("auth")
+    }
+    const response = await axios.post(`/api/v1/meet/joinmeet/${meetid}`,{},{headers:headers});
     navigate(`/meeting/${response.data.meet_id}`);
   }
   const create = async (e) => {
     e.preventDefault();
-    const response = await axios.post("/api/v1/meet/createmeet");
+    const headers = {
+      "Authorization": localStorage.getItem("auth")
+    }
+    const response = await axios.post("/api/v1/meet/createmeet",{},{headers:headers});
     navigate(`/meeting/${response.data.meeting_id}`);
   }
   return (

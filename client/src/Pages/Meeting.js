@@ -3,6 +3,8 @@ import './Meeting.css';
 import Navbar from '../component/Navbar';
 import Footer from '../component/Footer';
 import { useParams } from 'react-router-dom';
+import Compiler from '../component/Compiler';
+
 const Meeting = () => {
   const params = useParams();
   const [id,setid] = useState({});
@@ -13,7 +15,7 @@ const Meeting = () => {
   return (
     <main className='meeting-main-section'>
     <Navbar />
-    <h1>Meeting</h1>
+    <Compiler />
     <Footer />
     </main>
   )

@@ -161,7 +161,7 @@ export const mailcontroller = async (req, res) => {
                 const user = await usermodel.findOne({ email });
                 if (user) {
                     user.otp = otp;
-                    user.save();
+                    await user.save();
                 }
                 return res.status(200).send({
                     success: true,
@@ -197,7 +197,7 @@ export const verifyotpcontroller = async (req, res) => {
         }
         if (otp == user.otp) {
             user.isVerified = true
-            user.save();
+            await user.save();
             return res.status(200).send({
                 success: true,
                 message: "Verified successfully",
@@ -445,9 +445,9 @@ export const contactcontroller = async(req,res) => {
 
 export const islogincontroller = async(req,res) => {
     try {
-        const {token} = req.params;
-        const {name,email,username,isVerified} = req.body;
-        const user = await usermodel.findOne({ id:decode(token) });
+        const token = req.headers.token;
+        const {name,email,username} = req.body;
+        const user = await usermodel.findOne({ _id:decode(token)._id });
         if(name === undefined && email === undefined && username === undefined) {
             return res.status(200).send({
                 success:true,
@@ -457,14 +457,16 @@ export const islogincontroller = async(req,res) => {
         }
         else{
             if (name) user.name=name;
-            if (email) user.email=email;
+            if (email) {
+                user.email=email;
+                user.isVerified=false;
+            }
             if (username) user.username=username;
-            if (isVerified) user.isVerified=isVerified;
             await user.save();
             return res.status(200).send({
                 success:true,
-                message:"user found successfully",
-                data:[user.username, user.name, user.email, user.isVerified]
+                message:"user updated successfully",
+                data:[user.username, user.name, user.email, String(user.isVerified)]
             })
         }
     } catch (error) {
@@ -472,6 +474,27 @@ export const islogincontroller = async(req,res) => {
             success:false,
             message:"error in islogin api",
             error
+        })
+    }
+}
+export const deleteusercontroller = async(req,res) => {
+    try {
+        const token = req.headers.authorization;
+        const userid = decode(token)._id;
+        const user = await usermodel.deleteOne({_id:userid});
+        if (user.deletedCount == 1)
+        return res.status(200).send({
+            success:true,
+            message:"User deleted successfully"
+        })
+        return res.status(200).send({
+            success:false,
+            message:"user not deleted successfully"
+        })
+    } catch (error) {
+        return res.status(400).send({
+            success:false,
+            message:"error in delete user api"
         })
     }
 }

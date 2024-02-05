@@ -6,7 +6,6 @@ const meetschema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",
       required: true,
-      unique: true,
     },
     meeting_members: {
       type: Array,
