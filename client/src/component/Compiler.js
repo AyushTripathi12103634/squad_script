@@ -3,6 +3,8 @@ import axios from "axios";
 import Editor from '@monaco-editor/react';
 import './Compiler.css'
 import { saveAs } from 'file-saver';
+import { Bounce, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Compiler() {
 
@@ -271,6 +273,17 @@ function Compiler() {
     e.preventDefault();
     const blob = new Blob([fileContent], { type: "text/plain;charset=utf-8" });
     saveAs(blob, file.name);
+    toast.info('File Downlaoding Started', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      transition: Bounce,
+    });
   }
 
   const uploadcode = (event) => {
@@ -289,6 +302,17 @@ function Compiler() {
         }
       };
       reader.readAsText(uploadedFile);
+      toast.success('File Uploaded Successfully', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
     } else {
       console.log('No file selected');
     }
@@ -302,15 +326,29 @@ function Compiler() {
     e.preventDefault();
     setisTerminalOpen(false);
     try {
+      const headers = {
+        "authorization":localStorage.getItem("auth")
+      }
       const response = await axios.post(`/api/v1/rapidapi/judge`, {
         "language_id": file.id,
         "source_code": fileContent,
         "stdin": stdin ? stdin : "",
-      });
+      },{headers:headers});
 
       const { token } = response.data;
-      const result = await axios.get(`/api/v1/rapidapi/judge/${token}`);
+      const result = await axios.get(`/api/v1/rapidapi/judge/${token}`,{headers:headers});
       const { stdout, time, memory, stderr } = result.data;
+      toast.success('Code Submitted', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
       setoutput(stdout);
       setexecutiontime(time);
       setexecutionspace(memory);

@@ -3,6 +3,8 @@ import Navbar from '../component/Navbar';
 import Footer from '../component/Footer';
 import "./FogotPassword.css";
 import axios from 'axios';
+import { Bounce, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const ForgotPassword = () => {
     const [verified, setverified] = useState(false);
     const [email, setemail] = useState("");
@@ -18,16 +20,29 @@ const ForgotPassword = () => {
     const handleforgotpassword = (e) => {
         setnewpassword(e.target.value)
     }
+    const headers = {
+        "authorization":localStorage.getItem("auth")
+    }
     const handleoptenter = async (e) => {
         e.preventDefault();
         if (!verified) {
             try {
                 const response = await axios.post("/api/v1/auth/forgotpassword", {
                     email
-                });
+                },{headers:headers});
                 const otpsend = response.data;
                 setverified(otpsend.success);
-                alert(otpsend.message)
+                toast.info('OTP Sent', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    transition: Bounce,
+                });
             } catch (error) {
                 console.log(error);
             }
@@ -37,10 +52,33 @@ const ForgotPassword = () => {
                 const response = await axios.post("/api/v1/auth/verifyotp", {
                     email,
                     otp
-                });
+                },{headers:headers});
                 const otpcheck = response.data;
                 setotpverify(otpcheck.success);
-                alert(otpcheck.message)
+                if (otpcheck.success)
+                    toast.success('OTP Verified Successfully', {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "dark",
+                        transition: Bounce,
+                    });
+                else
+                    toast.error('OTP Verification Failed', {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "dark",
+                        transition: Bounce,
+                    });
             }
             catch (error) {
                 console.log(error)
@@ -50,11 +88,21 @@ const ForgotPassword = () => {
             try {
                 const response = await axios.post("/api/v1/auth/recievepassword/true", {
                     email, password: newpassword
-                });
+                },{headers:headers});
                 const result = response.data;
                 if (result.success) {
-                    alert("Password Changed Successfully");
-                    window.location="/login";
+                    toast.success('Password Changed Successfully', {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "dark",
+                        transition: Bounce,
+                    });
+                    window.location = "/login";
                 }
 
             } catch (error) {

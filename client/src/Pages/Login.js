@@ -4,6 +4,8 @@ import "./Login.css";
 import { Link, useNavigate } from "react-router-dom";
 import Footer from "../component/Footer";
 import axios from "axios";
+import { Bounce, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
   // const [name,setname]
@@ -50,7 +52,17 @@ const Login = () => {
       console.log(response);
       const t = response.data;
       if (t.success) {
-        console.log("regsitered successfully");
+        toast.success('Account registered successfully', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Bounce,
+        });
       }
     } catch (e) {
       console.log(e);
@@ -83,9 +95,31 @@ const Login = () => {
         localStorage.setItem("username",t.user.username);
         localStorage.setItem("email",t.user.email);
         localStorage.setItem("isVerified",String(t.user.isVerified));
+        toast.success('Logged in successfully', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Bounce,
+        });
         navigate("/home");
       }
     } catch (e) {
+      toast.error('Failed to Login. Try again or contact admin', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
       console.log(e);
     }
   };
@@ -143,6 +177,17 @@ const Login = () => {
   },[]);
 
   if (islogin) {
+    toast.info('Already Logged in. Redirected to home', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      transition: Bounce,
+    });
     navigate("/home");
   }
 

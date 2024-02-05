@@ -445,7 +445,7 @@ export const contactcontroller = async(req,res) => {
 
 export const islogincontroller = async(req,res) => {
     try {
-        const token = req.headers.token;
+        const token = req.headers.authorization;
         const {name,email,username} = req.body;
         const user = await usermodel.findOne({ _id:decode(token)._id });
         if(name === undefined && email === undefined && username === undefined) {
@@ -460,6 +460,7 @@ export const islogincontroller = async(req,res) => {
             if (email) {
                 user.email=email;
                 user.isVerified=false;
+                console.log(email);
             }
             if (username) user.username=username;
             await user.save();
