@@ -1,6 +1,6 @@
 import meetmodel from "../models/meetmodel.js";
 export const createmeetController = async (req,res) => {
-    // try {
+    try {
         const id = req.user._id;
         const checkid = await meetmodel.findOne({createdBy:id});
         let meet_id = "";
@@ -38,19 +38,30 @@ export const createmeetController = async (req,res) => {
                 checkid
             })
         }
-    // } catch (error) {
-    //     return res.status(400).send({
-    //         success:false,
-    //         message:"Failed to create meeting",
-    //         error: error,
-    //     })
-    // }
+    } catch (error) {
+        return res.status(400).send({
+            success:false,
+            message:"Failed to create meeting",
+            error: error,
+        })
+    }
 }
 export const joinmeetController = async (req,res) => {
     try {
         const {meet_id} = req.params;
+        const meet = await meetmodel.findOne({meeting_id:meet_id});
+        const id = decode(req.header.authorization);
+        meet.meeting_members.add(id);
+        await meet.save();
+        if (meet.meeting_members.length>=4){
+            return res.status(200).send({
+                success:false,
+                message:"Meeting members can't be greater than 4"
+            })
+        }
         return res.status(200).send({
-            meet_id
+            success:true,
+            message:"Joined Meeting"
         })
     } catch (error) {
         return res.status(400).send({

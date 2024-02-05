@@ -18,26 +18,30 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: process.env.SEVRER_URL || "http://localhost:3000",
+    origin: process.env.SERVER_URL || "http://localhost:3000",
     methods: ["GET", "POST"],
     credentials: true,
   },
 });
 
 io.on('connection', (socket) => {
-  console.log('a new user connected',socket.id);
+  console.log('a new user connected', socket.id);
 
   socket.on('join room', (room) => {
-      socket.join(room);
-      console.log(`User ${socket.id} joined room ${room}`);
+    socket.join(room);
+    console.log(`User ${socket.id} joined room ${room}`);
   });
 
   socket.on('code', (data) => {
-      socket.to(data.room).emit('code', data.text);
+    socket.to(data.room).emit('code', data.text);
+  });
+
+  socket.on('message', (data) => {
+    socket.to(data.room).emit("broadcast", data.text);
   });
 
   socket.on('disconnect', () => {
-      console.log('user disconnected',socket.id);
+    console.log('user disconnected', socket.id);
   });
 });
 

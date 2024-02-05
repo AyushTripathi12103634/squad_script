@@ -5,7 +5,6 @@ import './Compiler.css'
 import { saveAs } from 'file-saver';
 import { Bounce, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { io } from "socket.io-client";
 const Compiler = (props) => {
 
   const files = {
@@ -238,7 +237,21 @@ const Compiler = (props) => {
   // {"stdout":"Hello World","time":"0.001","memory":784,"stderr":null,"token":"e3e8b7a3-1d1b-4dd4-b2c5-3d3d711cd612","compile_output":null,"message":null,"status":{"id":3,"description":"Accepted"}}
 
   const [fileName, setFileName] = useState('C# (Mono 6.6.0.161)');
-  const [fileContent, setFileContent] = useState(files[fileName].value);
+  const [fileContent, setFileContent] = useState("");
+
+  useEffect(()=>{
+    setFileContent(props.FileContent!==""?props.FileContent:files[fileName].value);
+  },[props.FileContent]);
+
+  useEffect(()=>{
+    props.fun(fileContent);
+
+  },)
+    
+  
+  const handleTextChange = (value, event) => {
+    setFileContent(value);
+  };
   const [output, setoutput] = useState("");
   const [executiontime, setexecutiontime] = useState("");
   const [executionspace, setexecutionspace] = useState("");
@@ -257,7 +270,8 @@ const Compiler = (props) => {
     const selectedFileName = e.target.value;
     if (files.hasOwnProperty(selectedFileName)) {
       setFileName(selectedFileName);
-      setFileContent(files[selectedFileName].value);
+      setFileContent(files[selectedFileName].value)
+      props.fun(fileContent);
     }
   };
 
@@ -313,7 +327,7 @@ const Compiler = (props) => {
         theme: "dark",
         transition: Bounce,
       });
-      socketRef.current.emit('code', { room, text: fileContent });
+      props.fun(fileContent);
     } else {
       console.log('No file selected');
     }
@@ -361,37 +375,7 @@ const Compiler = (props) => {
       console.log(e);
     }
   }
-  useEffect(() => {
-    console.log('State updated:', output, executiontime, executionspace, executionerror);
-  }, [output, executiontime, executionspace, executionerror]);
 
-  const room = props.room;
-
-  const socketRef = useRef();
-
-    useEffect(() => {
-      const serverurl = process.env.SEVRER_URL || 'http://localhost:5000';
-        socketRef.current = io.connect(serverurl);
-
-        socketRef.current.on('connect_error', () => {
-          window.location.reload();
-      });
-
-        socketRef.current.emit('join room', room);
-
-        socketRef.current.on('code', (text) => {
-            setFileContent(text);
-        });
-
-        return () => {
-            socketRef.current.disconnect();
-        };
-    }, [room]);
-
-    const handleTextChange = (value,event) => {
-        setFileContent(value);
-        socketRef.current.emit('code', { room, text: value });
-    };
   return (
     <>
 
