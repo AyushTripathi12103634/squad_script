@@ -6,13 +6,20 @@
     overflow-y: scroll;
     overflow-x: hidden;
 }
-.privacy-main{
+
+.privacy-main {
     min-height: 100vh;
     display: grid;
     place-content: center;
     box-sizing: border-box;
     box-shadow: 25px 30px 55px #1e1e1e;
 }
-.privacy-heading{
+
+.privacy-heading {
     text-align: center;
+}
+@media (max-width: 768px) {
+    .privacy-content {
+        width: 95%;
+    }
 }

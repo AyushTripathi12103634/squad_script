@@ -4,24 +4,22 @@ import "./Navbar.css";
 import { CodeIcon, HamburgetMenuClose, HamburgetMenuOpen } from "./Icons";
 import SSLogo from "../images/SquadScript.png";
 
-function NavBar() {
+function NavBar({bgColor}) {
   const [click, setClick] = useState(false);
-  const [username,setusername] = useState("");
+  const [username, setusername] = useState("");
 
-  useEffect(() =>{
-    setusername(localStorage.getItem("username"))
-  },[])
+  useEffect(() => {
+    setusername(localStorage.getItem("username"));
+  }, []);
 
   const handleClick = () => setClick(!click);
   return (
     <>
-      <nav className="navbar">
+      <nav className="navbar" style={{ backgroundColor: bgColor }}>
         <div className="nav-container">
           <NavLink to="/Home" className="nav-logo">
-          <img src={SSLogo} alt="/"></img>
+            <img src={SSLogo} alt="/"></img>
             {/* <i className="fas fa-code"></i> */}
-           
-           
           </NavLink>
 
           <ul className={click ? "nav-menu active" : "nav-menu"}>
@@ -50,16 +48,24 @@ function NavBar() {
               </NavLink>
             </li>
             <li className="nav-item">
-              {username?(
+              {username ? (
                 <>
-                  <NavLink to="/profile" className="nav-links" onClick={handleClick}>
-                  {username}
+                  <NavLink
+                    to="/profile"
+                    className="nav-links"
+                    onClick={handleClick}
+                  >
+                    {username}
                   </NavLink>
                 </>
-              ):(
+              ) : (
                 <>
-                  <NavLink to="/login" className="nav-links" onClick={handleClick}>
-                  Login
+                  <NavLink
+                    to="/login"
+                    className="nav-links"
+                    onClick={handleClick}
+                  >
+                    Login
                   </NavLink>
                 </>
               )}
