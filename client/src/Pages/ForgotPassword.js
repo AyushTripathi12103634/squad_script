@@ -136,7 +136,7 @@ const ForgotPassword = () => {
                         )}
                     </form>
                     <div className='forgotsubmit'>
-                        <button className='btn btn-primary mt-5' onClick={handleoptenter}>Submit</button>
+                        <button className='btn btn-dark mt-5' onClick={handleoptenter}>Submit</button>
                     </div>
                 </div>
             </div>
