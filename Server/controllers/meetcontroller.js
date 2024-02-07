@@ -50,6 +50,12 @@ export const joinmeetController = async (req,res) => {
     try {
         const {meet_id} = req.params;
         const meet = await meetmodel.findOne({meeting_id:meet_id});
+        if(!meet){
+            return res.status(200).send({
+                success:false,
+                message:"No such meeting!"
+            })
+        }
         const id = decode(req.header.authorization);
         meet.meeting_members.add(id);
         await meet.save();

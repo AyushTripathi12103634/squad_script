@@ -290,7 +290,7 @@ export const getpasswordcontroller = async (req, res) => {
                     const hashed_password = await hashPassword(password);
                     user.password = hashed_password;
                     user.otp = null;
-                    user.save();
+                    await user.save();
                     return res.status(200).send({
                         success: true,
                         message: "password set successfully",
@@ -324,7 +324,6 @@ export const changepasswordcontroller = async (req, res) => {
         const user = await usermodel.findOne({ email });
         if (user) {
             var result = await comparePassword(password, user.password);
-            console.log(result);
             if (result) {
                 return res.status(200).send({
                     success: true,
@@ -364,7 +363,7 @@ export const verifychangepasswordcontroller = async (req, res) => {
                     const hashed_password = await hashPassword(newPassword);
                     user.password = hashed_password;
                     user.otp = null;
-                    user.save();
+                    await user.save();
                     return res.status(200).send({
                         success: true,
                         message: "password changed successfully",
@@ -447,6 +446,12 @@ export const islogincontroller = async(req,res) => {
     try {
         const token = req.headers.authorization;
         const {name,email,username} = req.body;
+        if(token===undefined || token==""){
+            return res.status(200).send({
+                success:false,
+                message:"provide jwt token"
+            })
+        }
         const user = await usermodel.findOne({ _id:decode(token)._id });
         if(name === undefined && email === undefined && username === undefined) {
             return res.status(200).send({
@@ -460,7 +465,6 @@ export const islogincontroller = async(req,res) => {
             if (email) {
                 user.email=email;
                 user.isVerified=false;
-                console.log(email);
             }
             if (username) user.username=username;
             await user.save();
