@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import "./Navbar.css";
-import { CodeIcon, HamburgetMenuClose, HamburgetMenuOpen } from "./Icons";
+import {  HamburgetMenuClose, HamburgetMenuOpen } from "./Icons";
 import SSLogo from "../images/SquadScript.png";
 
 function NavBar({bgColor}) {
@@ -17,14 +17,14 @@ function NavBar({bgColor}) {
     <>
       <nav className="navbar" style={{ backgroundColor: bgColor }}>
         <div className="nav-container">
-          <NavLink to="/Home" className="nav-logo">
+          <NavLink to="/" className="nav-logo">
             <img src={SSLogo} alt="/"></img>
             {/* <i className="fas fa-code"></i> */}
           </NavLink>
 
           <ul className={click ? "nav-menu active" : "nav-menu"}>
             <li className="nav-item">
-              <NavLink to="/Home" className="nav-links" onClick={handleClick}>
+              <NavLink to="/" className="nav-links" onClick={handleClick}>
                 Home
               </NavLink>
             </li>
@@ -76,11 +76,11 @@ function NavBar({bgColor}) {
 
             {click ? (
               <span className="icon">
-                <HamburgetMenuOpen />{" "}
+                <HamburgetMenuClose />{" "}
               </span>
             ) : (
               <span className="icon">
-                <HamburgetMenuClose />
+                <HamburgetMenuOpen />
               </span>
             )}
           </div>
