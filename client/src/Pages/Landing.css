@@ -36,8 +36,8 @@
     /* border:2px solid pink ; */
     display: flex;
     flex-direction: row;
-    align-items: end;
-   justify-content: end;
+    align-items: flex-end;
+   justify-content: flex-end;
    margin-right: 20px;
 }
 
@@ -80,8 +80,8 @@
     height: 60%;
     display: flex;
     flex-direction: row;
-    align-items: end;
-   justify-content: end;
+    align-items: flex-end;
+   justify-content: flex-end;
    
 }
 
@@ -92,7 +92,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: end;
+    align-items: flex-end;
 }
 
 .Landing-content2bButton button{
@@ -109,8 +109,8 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: end;
-    align-items: end;
+    justify-content: flex-end;
+    align-items: flex-end;
 }
 
 .Landing-content2bPhoto img{
