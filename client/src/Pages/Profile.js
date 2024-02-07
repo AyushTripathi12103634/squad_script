@@ -116,7 +116,7 @@ function Profile() {
         localStorage.setItem("isVerified", "");
         navigate('/login');
       }
-      else{
+      else {
         toast.error('Failed to Delete User. Try again or contact admin', {
           position: "top-right",
           autoClose: 5000,
@@ -175,65 +175,61 @@ function Profile() {
       console.log(error);
     }
   }
+  const [show,setshow] = useState(false);
+  const handleoption = () => {
+    setshow(!show)
+  }
 
   return (
     <>
       <Navbar />
-      <div className='profie-main'>
-        <div className='profile-content m-5'>
-          {edit ? (
-            <>
-              <div className='profile-username mb-2'>
-                <h3>Name: <span contentEditable onBlur={(e) => handleInputChange(e, setname)}>{name}</span></h3>
-              </div>
-              <div className='profile-email my-2'>
-                <h3>Username: <span contentEditable onBlur={(e) => handleInputChange(e, setusername)}>{username}</span></h3>
-              </div>
-              <div className='profile-name my-2'>
-                <h3>Email: <span contentEditable onBlur={(e) => handleInputChange(e, setemail)}>{email}</span></h3>
-              </div>
-              <div className='profile-isVerified mt-2 d-flex'>
-                <h3>Verified: {isverified}</h3>
-                {isverified === "true" ? (
-                  <button className='btn btn-dark ms-4' disabled>Verified</button>
-                ) : (
-                  <button className='btn btn-dark ms-4' onClick={verifyuser}>Verify</button>
-                )}
-              </div>
-              <div className='buttons'>
-                <button className='btn btn-success' onClick={handlesave}>Save Details</button>
-                <button className='btn btn-danger' onClick={handlelogout}>Logout</button>
-                <button className='btn btn-danger' onClick={handledelete}>Delete Profile</button>
-              </div>
-            </>
-          ) : (
-            <>
-              <div className='profile-username mb-2'>
-                <h3>Name: {name}</h3>
-              </div>
-              <div className='profile-email my-2'>
-                <h3>Username: {username}</h3>
-              </div>
-              <div className='profile-name my-2'>
-                <h3>Email: {email}</h3>
-              </div>
-              <div className='profile-isVerified mt-2 d-flex'>
-                <h3>Verified: {isverified}</h3>
-                {isverified === "true" ? (
-                  <button className='btn btn-dark ms-4' disabled>Verified</button>
-                ) : (
-                  <button className='btn btn-dark ms-4' onClick={verifyuser}>Verify</button>
-                )}
-              </div>
-              <div className='buttons'>
-                <button className='btn btn-success' onClick={handleedit}>Edit Details</button>
-                <button className='btn btn-danger' onClick={handlelogout}>Logout</button>
-                <button className='btn btn-danger' onClick={handledelete}>Delete Profile</button>
-              </div>
-            </>
-          )}
+      <div className='profile-main'>
+        <div className='profile-content'>
+          <table className='table m-5'>
+            <tbody>
+              <tr>
+                <td><strong>Name:</strong></td>
+                <td>{edit ? <span contentEditable onBlur={(e) => handleInputChange(e, setname)}>{name}</span> : name}</td>
+              </tr>
+              <tr>
+                <td><strong>Username:</strong></td>
+                <td>{edit ? <span contentEditable onBlur={(e) => handleInputChange(e, setusername)}>{username}</span> : username}</td>
+              </tr>
+              <tr>
+                <td><strong>Email:</strong></td>
+                <td>{edit ? <span contentEditable onBlur={(e) => handleInputChange(e, setemail)}>{email}</span> : email}</td>
+              </tr>
+              <tr>
+                <td><strong>Verified:</strong></td>
+                <td>
+                  {isverified}
+                  {isverified === "true" ? (
+                    <button className='btn btn-dark ms-4' disabled>Verified</button>
+                  ) : (
+                    <button className='btn btn-dark ms-4' onClick={verifyuser}>Verify</button>
+                  )}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div className='edit-options'>
+            <button className='btn btn-dark' onClick={handleoption}>Show more options</button>
+          </div>
         </div>
       </div>
+      {show?(
+        <div className='profile-buttons mt-5'>
+        <div className='buttons'>
+          {edit ? (
+            <button className='btn btn-dark' onClick={handlesave}>Save Details</button>
+          ) : (
+            <button className='btn btn-dark' onClick={handleedit}>Edit Details</button>
+          )}
+          <button className='btn btn-danger' onClick={handlelogout}>Logout</button>
+          <button className='btn btn-danger' onClick={handledelete}>Delete Profile</button>
+        </div>
+      </div>
+      ):""}
       <Footer />
     </>
   );
