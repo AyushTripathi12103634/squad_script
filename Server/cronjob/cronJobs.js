@@ -1,12 +1,9 @@
 import cron from 'node-cron';
 import usermodel from '../models/usermodel.js'
 
-cron.schedule('0 0 * * *', async () => {
+cron.schedule('*/10 * * * * *', async () => {
     try {
-        const users = await usermodel.find();
-        users.forEach(user => {
-            user.checkVerification();
-        });
+        console.log("hello");
     } catch (error) {
         console.error(error);
     }
