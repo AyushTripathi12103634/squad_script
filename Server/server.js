@@ -8,6 +8,7 @@ import rapidApiRoute from './routes/rapidApiRoute.js'
 import cors from 'cors';
 import { Server } from "socket.io";
 import { createServer } from "http";
+import './cronjob/cronJobs.js';
 
 // Configuring dotenv
 dotenv.config();
@@ -24,7 +25,7 @@ const io = new Server(server, {
   },
 });
 
-io.on('connection', (socket) => {
+io.on('connection',(socket) => {
   console.log('a new user connected', socket.id);
 
   socket.on('join room', (room) => {
@@ -33,11 +34,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('code', (data) => {
-    socket.to(data.room).emit('code', data.text);
-  });
-
-  socket.on('message', (data) => {
-    socket.to(data.room).emit("broadcast", data.text);
+    socket.in(data.room).emit('code', data.text);
   });
 
   socket.on('disconnect', () => {
@@ -55,7 +52,7 @@ app.use("/", (req, res) => {
   res.send("<h1>Squad Script</h1>");
 });
 
-const PORT = process.env.PORT || 5000; // Assuming a default port of 5000
+const PORT = process.env.PORT || 5000;
 
 server.listen(PORT, () => {
   console.log(`Server running on port number ${PORT}`.bgGreen.white);
