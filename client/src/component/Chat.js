@@ -1,22 +1,37 @@
-import React, { useState, useEffect } from "react";
-import queryString from "query-string";
-import io from "socket.io-client";
+import React, { useState, useEffect, useRef } from 'react';
+import './Chat.css'; // Import the CSS file
 
-let socket;
+const Chat = ({ messages, sendMessage }) => {
+  const [input, setInput] = useState('');
+  const messagesEndRef = useRef(null);
 
-const Chat = ({ location }) => {
-  const [name, setName] = useState("");
-  const [room, setRoom] = useState("");
-  const ENDPOINT = "http://localhost:5000";
+  const handleSend = () => {
+    sendMessage(input);
+    setInput('');
+  };
 
   useEffect(() => {
-    const { name, room } = queryString.parse(location.search);
-    socket = io(ENDPOINT);
-    setRoom(room);
-    setName(name);
-  }, [location.search]);
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
 
-  return <div>Chat</div>;
+  return (
+    <div className="chat-container">
+      <div className="chat-messages">
+        {messages.map((message, index) => (
+          <p key={index} className="chat-message text-light">
+            <span className="username">{message.username}</span>: {message.text}
+          </p>
+        ))}
+        <div ref={messagesEndRef} />
+      </div>
+      <div className="chat-input">
+        <input className='form-control' placeholder='Enter Message' value={input} onChange={e => setInput(e.target.value)} />
+        <button className='btn btn-dark' onClick={handleSend} disabled={input === ''}>Send</button>
+      </div>
+    </div>
+  );
 };
 
 export default Chat;
