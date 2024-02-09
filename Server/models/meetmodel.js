@@ -22,4 +22,11 @@ const meetschema = new mongoose.Schema(
   }
 );
 
+meetschema.methods.checkmeetExpiry = async function() {
+  const twentyFourHoursAgo = new Date();
+  twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 24);
+  if (this.createdAt < twentyFourHoursAgo) {
+    await this.model('Meet').deleteOne({ _id: this._id });
+  }
+};
 export default mongoose.model("Meet", meetschema);

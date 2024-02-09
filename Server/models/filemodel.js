@@ -39,5 +39,13 @@ const fileschema = new mongoose.Schema(
     }
   );
   
+  fileschema.methods.checkExpiry = async function() {
+    const twentyFourHoursAgo = new Date();
+    twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 24);
+    if (this.createdAt < twentyFourHoursAgo) {
+      await this.model('files').deleteOne({ _id: this._id });
+    }
+  };
+  
   export default mongoose.model("files", fileschema);
   
