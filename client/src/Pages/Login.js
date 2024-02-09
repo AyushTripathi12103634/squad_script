@@ -49,23 +49,29 @@ const Login = () => {
           password: registerpassword,
         }
       );
-      console.log(response);
-      const t = response.data;
-      if (t.success) {
-        toast.success('Account registered successfully', {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-          transition: Bounce,
-        });
-      }
+      toast.success(`${response.data.message}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
     } catch (e) {
-      console.log(e);
+      toast.error(`Error ${e.response.status} :${e.response.data.message}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
     }
   };
 
@@ -95,32 +101,31 @@ const Login = () => {
         localStorage.setItem("username",t.user.username);
         localStorage.setItem("email",t.user.email);
         localStorage.setItem("isVerified",String(t.user.isVerified));
-        toast.success('Logged in successfully', {
+        toast.success(`${t.message}`, {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
-          pauseOnHover: true,
+          pauseOnHover: false,
           draggable: true,
           progress: undefined,
           theme: "dark",
           transition: Bounce,
         });
-        navigate("/home");
+        navigate("/");
       }
     } catch (e) {
-      toast.error('Failed to Login. Try again or contact admin', {
+      toast.error(`${e.response.data.message}`, {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
-        pauseOnHover: true,
+        pauseOnHover: false,
         draggable: true,
         progress: undefined,
         theme: "dark",
         transition: Bounce,
       });
-      console.log(e);
     }
   };
 
@@ -182,13 +187,13 @@ const Login = () => {
       autoClose: 5000,
       hideProgressBar: false,
       closeOnClick: true,
-      pauseOnHover: true,
+      pauseOnHover: false,
       draggable: true,
       progress: undefined,
       theme: "dark",
       transition: Bounce,
     });
-    navigate("/home");
+    navigate("/");
   }
 
   return (

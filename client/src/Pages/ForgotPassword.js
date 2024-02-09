@@ -5,12 +5,14 @@ import "./FogotPassword.css";
 import axios from 'axios';
 import { Bounce, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 const ForgotPassword = () => {
     const [verified, setverified] = useState(false);
     const [email, setemail] = useState("");
     const [otp, setotp] = useState("");
     const [otpverify, setotpverify] = useState(false);
     const [newpassword, setnewpassword] = useState("");
+    const navigate = useNavigate();
     const handleforgotemail = (e) => {
         setemail(e.target.value);
     }
@@ -32,19 +34,29 @@ const ForgotPassword = () => {
                 },{headers:headers});
                 const otpsend = response.data;
                 setverified(otpsend.success);
-                toast.info('OTP Sent', {
+                toast.info(`${response.data.message}`, {
                     position: "top-right",
                     autoClose: 5000,
                     hideProgressBar: false,
                     closeOnClick: true,
-                    pauseOnHover: true,
+                    pauseOnHover: false,
                     draggable: true,
                     progress: undefined,
                     theme: "dark",
                     transition: Bounce,
                 });
             } catch (error) {
-                console.log(error);
+                toast.error(`${error.response.data.message}`, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    transition: Bounce,
+                });
             }
         }
         else if (verified && !otpverify) {
@@ -55,33 +67,30 @@ const ForgotPassword = () => {
                 },{headers:headers});
                 const otpcheck = response.data;
                 setotpverify(otpcheck.success);
-                if (otpcheck.success)
-                    toast.success('OTP Verified Successfully', {
-                        position: "top-right",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "dark",
-                        transition: Bounce,
-                    });
-                else
-                    toast.error('OTP Verification Failed', {
-                        position: "top-right",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "dark",
-                        transition: Bounce,
-                    });
+                toast.success(`${response.data.message}`, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    transition: Bounce,
+                });
             }
             catch (error) {
-                console.log(error)
+                toast.error(`${e.response.data.message}`, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    transition: Bounce,
+                });
             }
         }
         else if (verified && otpverify) {
@@ -90,23 +99,31 @@ const ForgotPassword = () => {
                     email, password: newpassword
                 },{headers:headers});
                 const result = response.data;
-                if (result.success) {
-                    toast.success('Password Changed Successfully', {
-                        position: "top-right",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "dark",
-                        transition: Bounce,
-                    });
-                    window.location = "/login";
-                }
+                toast.success(`${result.response}`, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    transition: Bounce,
+                });
+                navigate("/login");
 
             } catch (error) {
-                console.log(error);
+                toast.error(`${error.response.data.message}`, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    transition: Bounce,
+                });
             }
         }
     }
