@@ -239,16 +239,16 @@ const Compiler = (props) => {
   const [fileName, setFileName] = useState('C# (Mono 6.6.0.161)');
   const [fileContent, setFileContent] = useState("");
 
-  useEffect(()=>{
-    setFileContent(props.FileContent!==""?props.FileContent:files[fileName].value);
-  },[props.FileContent]);
+  useEffect(() => {
+    setFileContent(props.FileContent !== "" ? props.FileContent : files[fileName].value);
+  }, [props.FileContent]);
 
-  useEffect(()=>{
+  useEffect(() => {
     props.fun(fileContent);
 
   },)
-    
-  
+
+
   const handleTextChange = (value, event) => {
     setFileContent(value);
   };
@@ -334,6 +334,7 @@ const Compiler = (props) => {
   }
 
   const changeterminal = (e) => {
+    setuseeditorwidth(!useeditorwidth);
     setisTerminalOpen(!isTerminalOpen);
   }
 
@@ -375,6 +376,10 @@ const Compiler = (props) => {
       console.log(e);
     }
   }
+
+  const [editorwidth, seteditorwidth] = useState("640px");
+  const [useeditorwidth, setuseeditorwidth] = useState(false);
+
   const [checkacc,setcheckacc] = useState(false);
   const uploadtodb = async() => {
     console.log(files[fileName])
@@ -420,100 +425,96 @@ const Compiler = (props) => {
   return (
     <>
 
-      <div className='d-flex justify-content-evenly'>
-        <div className='compiler-language'>
-          <form className='d-flex justify-content-evenly'>
-            <select className='form-select' id="compiler-languages" onChange={handleLanguageChange} value={fileName}>
-              {Object.keys(files).map((key) => (
-                <option key={key} value={key}>
-                  {files[key].language}
-                </option>
-              ))}
-            </select>
-            <select className='form-select' onChange={handlethemechange}>
-              <option value="vs-dark">VS-Dark Theme</option>
-              <option value="vs-light">VS-Light Theme</option>
-            </select>
-          </form>
-          <Editor
-            height="50vh"
-            theme={editortheme}
-            width="100%"
-            path={file.name}
-            language={file.editor_name}
-            value={fileContent}
-            onMount={handleEditorDidMount}
-            onChange={handleTextChange}
-            options={{
-              "acceptSuggestionOnCommitCharacter": true,
-              "acceptSuggestionOnEnter": "on",
-              "accessibilitySupport": "auto",
-              "autoIndent": true,
-              "automaticLayout": true,
-              "codeLens": true,
-              "colorDecorators": true,
-              "contextmenu": true,
-              "cursorBlinking": "blink",
-              "cursorSmoothCaretAnimation": true,
-              "cursorStyle": "line",
-              "disableLayerHinting": true,
-              "disableMonospaceOptimizations": true,
-              "dragAndDrop": true,
-              "fixedOverflowWidgets": true,
-              "folding": true,
-              "foldingStrategy": "auto",
-              "fontLigatures": true,
-              "formatOnPaste": true,
-              "formatOnType": true,
-              "hideCursorInOverviewRuler": true,
-              "highlightActiveIndentGuide": true,
-              "links": true,
-              "mouseWheelZoom": true,
-              "multiCursorMergeOverlapping": true,
-              "multiCursorModifier": "alt",
-              "overviewRulerBorder": true,
-              "overviewRulerLanes": 2,
-              "quickSuggestions": true,
-              "quickSuggestionsDelay": 10,
-              "readOnly": false,
-              "renderControlCharacters": true,
-              "renderFinalNewline": true,
-              "renderIndentGuides": true,
-              "renderLineHighlight": "all",
-              "renderWhitespace": "none",
-              "revealHorizontalRightPadding": 30,
-              "roundedSelection": true,
-              "rulers": [],
-              "scrollBeyondLastColumn": 5,
-              "scrollBeyondLastLine": true,
-              "selectOnLineNumbers": true,
-              "selectionClipboard": true,
-              "selectionHighlight": true,
-              "showFoldingControls": "mouseover",
-              "smoothScrolling": true,
-              "suggestOnTriggerCharacters": true,
-              "wordBasedSuggestions": true,
-              "wordSeparators": "~!@#$%^&*()-=+[{]}|;:'\",.<>/?",
-              "wordWrap": "off",
-              "wordWrapBreakAfterCharacters": "\t})]?|&,;",
-              "wordWrapBreakBeforeCharacters": "{([+",
-              "wordWrapBreakObtrusiveCharacters": ".",
-              "wordWrapColumn": 80,
-              "wordWrapMinified": true,
-              "wrappingIndent": "none"
-            }}
-          />
-          <div className='d-flex justify-content-evenly'>
-            <button className='btn btn-success' onClick={submitcode}>Submit</button>
-            <button className='btn btn-primary' onClick={downloadcode}>Download Code File</button>
-            <div style={{ width: 'auto' }}>
-              <input type='file' id='file' className='form-control' onChange={uploadcode} style={{ display: 'none' }} />
-              <label htmlFor='file' className='btn btn-primary'>Upload Code File</label>
-            </div>
-            <button className='btn btn-primary' onClick={changeterminal}>{isTerminalOpen ? 'Close Terminal' : 'Open Terminal'}</button>
-          </div>
+      <div className='trial'>
+        <div className={`w-${useeditorwidth?"100":"75"} d-flex`}>
+        <select className='form-select bg-dark text-light' id="compiler-languages" onChange={handleLanguageChange} value={fileName}>
+          {Object.keys(files).map((key) => (
+            <option key={key} value={key}>
+              {files[key].language}
+            </option>
+          ))}
+        </select>
+        <select className='form-select bg-dark text-light' onChange={handlethemechange}>
+          <option value="vs-dark">VS-Dark Theme</option>
+          <option value="vs-light">VS-Light Theme</option>
+        </select>
         </div>
-        {isTerminalOpen && (
+        <Editor
+          height="50vh"
+          theme={editortheme}
+          width={useeditorwidth ? editorwidth : props.width}
+          path={file.name}
+          language={file.editor_name}
+          value={fileContent}
+          onMount={handleEditorDidMount}
+          onChange={handleTextChange}
+          options={{
+            "acceptSuggestionOnCommitCharacter": true,
+            "acceptSuggestionOnEnter": "on",
+            "accessibilitySupport": "auto",
+            "autoIndent": true,
+            "automaticLayout": true,
+            "codeLens": true,
+            "colorDecorators": true,
+            "contextmenu": true,
+            "cursorBlinking": "blink",
+            "cursorSmoothCaretAnimation": true,
+            "cursorStyle": "line",
+            "disableLayerHinting": true,
+            "disableMonospaceOptimizations": true,
+            "dragAndDrop": true,
+            "fixedOverflowWidgets": true,
+            "folding": true,
+            "foldingStrategy": "auto",
+            "fontLigatures": true,
+            "formatOnPaste": true,
+            "formatOnType": true,
+            "hideCursorInOverviewRuler": true,
+            "highlightActiveIndentGuide": true,
+            "links": true,
+            "mouseWheelZoom": true,
+            "multiCursorMergeOverlapping": true,
+            "multiCursorModifier": "alt",
+            "overviewRulerBorder": true,
+            "overviewRulerLanes": 2,
+            "quickSuggestions": true,
+            "quickSuggestionsDelay": 10,
+            "readOnly": false,
+            "renderControlCharacters": true,
+            "renderFinalNewline": true,
+            "renderIndentGuides": true,
+            "renderLineHighlight": "all",
+            "renderWhitespace": "none",
+            "revealHorizontalRightPadding": 30,
+            "roundedSelection": true,
+            "rulers": [],
+            "scrollBeyondLastColumn": 5,
+            "scrollBeyondLastLine": true,
+            "selectOnLineNumbers": true,
+            "selectionClipboard": true,
+            "selectionHighlight": true,
+            "showFoldingControls": "mouseover",
+            "smoothScrolling": true,
+            "suggestOnTriggerCharacters": true,
+            "wordBasedSuggestions": true,
+            "wordSeparators": "~!@#$%^&*()-=+[{]}|;:'\",.<>/?",
+            "wordWrap": "off",
+            "wordWrapBreakAfterCharacters": "\t})]?|&,;",
+            "wordWrapBreakBeforeCharacters": "{([+",
+            "wordWrapBreakObtrusiveCharacters": ".",
+            "wordWrapColumn": 80,
+            "wordWrapMinified": true,
+            "wrappingIndent": "none"
+          }}
+        />
+        <button className='btn btn-success' onClick={submitcode}>Submit</button>
+        <button className='btn btn-dark ms-4' onClick={downloadcode}>Download Code File</button>
+        <input type='file' id='file' className='form-control' onChange={uploadcode} style={{ display: 'none' }} />
+        <label htmlFor='file' className='btn btn-dark ms-4'>Upload Code File</label>
+        <button className='btn btn-dark ms-4' onClick={changeterminal}>{isTerminalOpen ? 'Close Terminal' : 'Open Terminal'}</button>
+      </div>
+      <div className='input-div'>
+      {isTerminalOpen && (
           <div className='compiler-output me-5'>
             <textarea id="compiler-inputhandler" className='form-control compiler-textarea' onChange={handleinputchange}></textarea>
             {!executionerror ? (
@@ -525,7 +526,6 @@ const Compiler = (props) => {
             )}
           </div>
         )}
-
       </div>
     </>
   );

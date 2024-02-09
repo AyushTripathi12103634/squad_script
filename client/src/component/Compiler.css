@@ -13,7 +13,7 @@
 }
 #compiler-inputhandler{
     height: 250px;
-    width: 500px;
+    /* width: 500px; */
     resize: none;
     bottom: 50px;
     position: relative;
@@ -21,6 +21,17 @@
 .compiler-output{
     top:50px;
     position: relative;
-    height: 330px;
+    /* height: 330px; */
     width: 500px;
+}
+.trial{
+    position: relative;
+    width: fit-content;
+    left: 350px;
+}
+.input-div{
+    position: relative;
+    width: fit-content;
+    left: 1000px;
+    bottom: 390px;
 }
