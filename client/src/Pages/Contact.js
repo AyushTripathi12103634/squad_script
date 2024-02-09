@@ -26,62 +26,62 @@ const Contact = () => {
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (check && email.endsWith("@gmail.com")) {
-            const header = {
-                "authorization": localStorage.getItem("auth")
-            }
-            const response = await axios.post("/api/v1/auth/contact", {
-                email: email,
-                content: content,
-                type: type,
-            },{headers:header})
-            if (response.data.success){
-                toast.success('Message sent!', {
+        try {
+
+            if (check && email === localStorage.getItem('email')) {
+                const header = {
+                    "authorization": localStorage.getItem("auth")
+                }
+                const response = await axios.post("/api/v1/auth/contact", {
+                    email: email,
+                    content: content,
+                    type: type,
+                }, { headers: header })
+                toast.success(`${response.data.message}`, {
                     position: "top-right",
                     autoClose: 5000,
                     hideProgressBar: false,
                     closeOnClick: true,
-                    pauseOnHover: true,
+                    pauseOnHover: false,
                     draggable: true,
                     progress: undefined,
                     theme: "dark",
                     transition: Bounce,
                 });
             }
-            else{
-                toast.error('Failed to Send Message. Try again or contact admin', {
+            else if (check && email !== localStorage.getItem('email')) {
+                toast.warning('Enter correct mail address', {
                     position: "top-right",
                     autoClose: 5000,
                     hideProgressBar: false,
                     closeOnClick: true,
-                    pauseOnHover: true,
+                    pauseOnHover: false,
                     draggable: true,
                     progress: undefined,
                     theme: "dark",
                     transition: Bounce,
                 });
             }
-        }
-        else if (check && !email.endsWith("@gmail.com")) {
-            toast.warning('Enter correct gmail', {
+            else {
+                toast.warning('Accept the Terms and Conditions', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    transition: Bounce,
+                });
+            }
+        } catch (error) {
+            toast.error(`${e.response.data.message}`, {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
                 closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-                transition: Bounce,
-            });
-        }
-        else {
-            toast.warning('Accept the Terms and Conditions', {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
+                pauseOnHover: false,
                 draggable: true,
                 progress: undefined,
                 theme: "dark",

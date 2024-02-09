@@ -33,7 +33,7 @@ function Profile() {
       autoClose: 5000,
       hideProgressBar: false,
       closeOnClick: true,
-      pauseOnHover: true,
+      pauseOnHover: false,
       draggable: true,
       progress: undefined,
       theme: "dark",
@@ -63,7 +63,7 @@ function Profile() {
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
-        pauseOnHover: true,
+        pauseOnHover: false,
         draggable: true,
         progress: undefined,
         theme: "dark",
@@ -76,7 +76,7 @@ function Profile() {
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
-        pauseOnHover: true,
+        pauseOnHover: false,
         draggable: true,
         progress: undefined,
         theme: "dark",
@@ -103,7 +103,7 @@ function Profile() {
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
-          pauseOnHover: true,
+          pauseOnHover: false,
           draggable: true,
           progress: undefined,
           theme: "dark",
@@ -122,7 +122,7 @@ function Profile() {
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
-          pauseOnHover: true,
+          pauseOnHover: false,
           draggable: true,
           progress: undefined,
           theme: "dark",
@@ -150,7 +150,7 @@ function Profile() {
             autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: true,
-            pauseOnHover: true,
+            pauseOnHover: false,
             draggable: true,
             progress: undefined,
             theme: "dark",
@@ -163,7 +163,7 @@ function Profile() {
             autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: true,
-            pauseOnHover: true,
+            pauseOnHover: false,
             draggable: true,
             progress: undefined,
             theme: "dark",
@@ -172,7 +172,17 @@ function Profile() {
         }
       }
     } catch (error) {
-      console.log(error);
+      toast.error(`${error.response.data.message}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+    });
     }
   }
   const [show,setshow] = useState(false);
@@ -213,7 +223,11 @@ function Profile() {
             </tbody>
           </table>
           <div className='edit-options'>
-            <button className='btn btn-dark' onClick={handleoption}>Show more options</button>
+            {show?(
+              <button className='btn btn-dark' onClick={handleoption}>Hide options</button>
+            ):(
+              <button className='btn btn-dark' onClick={handleoption}>Show more options</button>
+            )}
           </div>
         </div>
       </div>

@@ -34,17 +34,17 @@ export const registerController = async (req, res) => {
 
         const exist_email = await usermodel.findOne({ email: email });
         if (exist_email) {
-            return res.status(300).send({
+            return res.status(409).send({
                 success: false,
-                message: "user already exists",
+                message: "User already exists",
             });
         }
 
         const exist_name = await usermodel.findOne({ username: username });
         if (exist_name) {
-            return res.status(300).send({
+            return res.status(409).send({
                 success: false,
-                message: "username already exists",
+                message: "Username already exists",
             });
         }
 
@@ -55,20 +55,20 @@ export const registerController = async (req, res) => {
                 username: username,
                 password: hashed_password,
             }).save();
-            return res.status(200).send({
+            return res.status(201).send({
                 success: true,
                 message: "user registered successfully",
                 user,
             });
         } catch (error) {
-            return res.status(400).send({
+            return res.status(500).send({
                 success: false,
                 message: "Failed to create user",
                 error: error,
             });
         }
     } catch (error) {
-        return res.status(400).send({
+        return res.status(500).send({
             success: false,
             message: "Error in register API",
             error: error,
@@ -82,20 +82,20 @@ export const loginController = async (req, res) => {
         if (!email) {
             return res.status(400).send({
                 success: false,
-                message: "Enter email",
+                message: "Email is required",
             });
         }
         if (!password) {
             return res.status(400).send({
                 success: false,
-                message: "Enter password",
+                message: "Password is required",
             });
         }
         const user = await usermodel.findOne({ email: email });
         if (!user) {
-            return res.status(400).send({
+            return res.status(404).send({
                 success: false,
-                message: "No such user found",
+                message: "No User found",
             });
         }
         const result = await comparePassword(password, user.password);
@@ -119,13 +119,13 @@ export const loginController = async (req, res) => {
                 token,
             });
         } else {
-            return res.status(400).send({
+            return res.status(401).send({
                 success: false,
                 message: "Invalid Password",
             });
         }
     } catch (error) {
-        return res.status(400).send({
+        return res.status(500).send({
             success: false,
             message: "Failed to login",
         });
@@ -168,7 +168,7 @@ export const mailcontroller = async (req, res) => {
                     message: "email has been Sent",
                 });
             } catch (error) {
-                return res.status(400).send({
+                return res.status(500).send({
                     success: false,
                     message: "Failed to send mail",
                     error,
@@ -190,13 +190,14 @@ export const verifyotpcontroller = async (req, res) => {
         const { email, otp } = req.body;
         let user = await usermodel.findOne({ email: email });
         if (!user) {
-            return res.status(200).send({
+            return res.status(404).send({
                 success: false,
-                message: "No such user",
+                message: "No user found",
             })
         }
         if (otp == user.otp) {
             user.isVerified = true
+            user.lastVerified = Date.now();
             await user.save();
             return res.status(200).send({
                 success: true,
@@ -204,13 +205,13 @@ export const verifyotpcontroller = async (req, res) => {
             })
         }
         else {
-            return res.status(200).send({
+            return res.status(401).send({
                 success: false,
                 message: "Wrong OTP"
             })
         }
     } catch (error) {
-        return res.status(400).send({
+        return res.status(500).send({
             success: false,
             message: "Error in verify otp controller"
         })
@@ -265,13 +266,13 @@ export const forgotpasswordcontroller = async (req, res) => {
             sendMail(transporter, mailoption);
         }
         else {
-            return res.status(400).send({
+            return res.status(404).send({
                 success: false,
-                message: "no such user",
+                message: "no user found",
             })
         }
     } catch (error) {
-        return res.status(400).send({
+        return res.status(500).send({
             success: false,
             message: "error in forgot password api"
         })
@@ -293,25 +294,25 @@ export const getpasswordcontroller = async (req, res) => {
                     await user.save();
                     return res.status(200).send({
                         success: true,
-                        message: "password set successfully",
+                        message: "Password changed successfully",
                     })
                 }
                 catch (e) {
-                    return res.status(400).send({
+                    return res.status(500).send({
                         success: false,
-                        message: "error in saving password",
+                        message: "Error in changing password",
                     })
                 }
             }
             else {
-                return res.status(400).send({
+                return res.status(404).send({
                     success: false,
-                    message: 'redirect to forgot password',
+                    message: 'No user found',
                 })
             }
         }
     } catch (error) {
-        return res.status(400).send({
+        return res.status(500).send({
             success: false,
             message: "error in get password api"
         })
@@ -423,7 +424,7 @@ export const contactcontroller = async(req,res) => {
                 }
                 return res.status(200).send({
                     success: true,
-                    message: "email has been Sent",
+                    message: "Mail has been Sent",
                 });
             } catch (error) {
                 return res.status(400).send({
@@ -435,9 +436,9 @@ export const contactcontroller = async(req,res) => {
         };
         sendMail(transporter, mailoption);
     } catch (error) {
-        return res.status(400).send({
+        return res.status(500).send({
             success:false,
-            message: "eror in contact api"
+            message: "Error in contact api"
         })
     }
 }
@@ -446,14 +447,21 @@ export const islogincontroller = async(req,res) => {
     try {
         const token = req.headers.authorization;
         const {name,email,username} = req.body;
-        if(token===undefined || token==""){
-            return res.status(200).send({
+        if(!token){
+            return res.status(401).send({
                 success:false,
-                message:"provide jwt token"
+                message:"No JWT Token Provided"
             })
         }
-        const user = await usermodel.findOne({ _id:decode(token)._id });
-        if(name === undefined && email === undefined && username === undefined) {
+        const decoded = JWT.verify(token, process.env.JWT_SECRET);
+        const user = await usermodel.findOne({ _id: decoded._id });
+        if(!user){
+            return res.status(404).send({
+                success:false,
+                message:"User not found"
+            })
+        }
+        if(!name && !email && !username) {
             return res.status(200).send({
                 success:true,
                 message:"user found successfully",
@@ -461,12 +469,13 @@ export const islogincontroller = async(req,res) => {
             })
         }
         else{
-            if (name) user.name=name;
-            if (email) {
+            if (name && name!==user.name) user.name=name;
+            if (email && email!==user.email) {
                 user.email=email;
                 user.isVerified=false;
+                user.lastVerified=Date.now();
             }
-            if (username) user.username=username;
+            if (username && username!==user.username) user.username=username;
             await user.save();
             return res.status(200).send({
                 success:true,
@@ -475,13 +484,13 @@ export const islogincontroller = async(req,res) => {
             })
         }
     } catch (error) {
-        return res.status(400).send({
+        console.error(error); // Log the error
+        return res.status(500).send({
             success:false,
-            message:"error in islogin api",
-            error
+            message:"An error occurred"
         })
     }
-}
+};
 export const deleteusercontroller = async(req,res) => {
     try {
         const token = req.headers.authorization;
