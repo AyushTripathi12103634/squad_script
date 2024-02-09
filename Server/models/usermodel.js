@@ -38,17 +38,17 @@ const userschema = new mongoose.Schema(
   }
 );
 
-userschema.methods.checkVerification = function() {
+userschema.methods.checkVerification = async function() {
   const sixMonthsAgo = new Date();
   sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
   const oneMonthAgo = new Date();
   oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
   if (this.lastVerified < sixMonthsAgo) {
     this.isVerified = false;
-    this.save();
+    await this.save();
   }
   if (!this.isVerified && this.lastVerified < oneMonthAgo) {
-    this.remove();
+    await this.model('Users').deleteOne({ _id: this._id });
   }
 };
 
