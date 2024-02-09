@@ -33,6 +33,11 @@ io.on('connection',(socket) => {
     console.log(`User ${socket.id} joined room ${room}`);
   });
 
+  socket.on('message', (data) => {
+    console.log('message: ', data.text);
+    io.to(data.room).emit('message', { username: data.username, text: data.text });
+  });
+
   socket.on('code', (data) => {
     socket.in(data.room).emit('code', data.text);
   });
