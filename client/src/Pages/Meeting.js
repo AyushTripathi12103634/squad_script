@@ -1,10 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
 import './Meeting.css';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Compiler from '../component/Compiler';
 import Chat from '../component/Chat';
 import { io } from "socket.io-client";
 import { GiCctvCamera, GiChatBubble, GiMicrophone, GiPhotoCamera, GiVideoConference } from "react-icons/gi";
+import axios from 'axios';
+import { Bounce, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Meeting = () => {
   const params = useParams();
@@ -16,6 +19,7 @@ const Meeting = () => {
   const [messages, setMessages] = useState([]);
   const room = id;
 
+  const navigate = useNavigate();
 
   const socketRef = useRef();
 
@@ -30,8 +34,42 @@ const Meeting = () => {
     socketRef.current.emit('message', { room, text: message, username });
   };
 
+  const [islogin, setislogin] = useState(false);
+  
+  const checkislogin = async (e) => {
+    try{
+      if (localStorage.getItem("auth")===""){
+        setislogin(false);
+      }
+      else{
+        const headers = {
+          "Authorization":localStorage.getItem("auth")
+        }
+        const response = await axios.post("/api/v1/auth/islogin",{},{headers:headers});
+        setislogin(response.data.success);
+      }
+    }
+    catch(error){
+      setislogin(false);
+    }
+  }
 
   useEffect(() => {
+    checkislogin();
+    if (!islogin){
+      toast.warning(`To enter a meeting, you must be logged in!!`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
+      navigate("/login");
+    }
     const serverurl = process.env.SEVRER_URL || 'http://localhost:5000';
     socketRef.current = io.connect(serverurl);
 
