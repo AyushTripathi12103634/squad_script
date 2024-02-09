@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import authRoute from './routes/authRoute.js';
 import meetRoute from './routes/meetRoute.js';
+
+import fileRoute from './routes/fileRoute.js';
 import rapidApiRoute from './routes/rapidApiRoute.js'
 import cors from 'cors';
 import { Server } from "socket.io";
@@ -47,6 +49,7 @@ app.use(cors());
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/meet", meetRoute);
 app.use("/api/v1/rapidapi", rapidApiRoute);
+app.use("/api/v1/file", fileRoute);
 
 app.use("/", (req, res) => {
   res.send("<h1>Squad Script</h1>");

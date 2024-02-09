@@ -49,7 +49,7 @@ const Meeting = () => {
     <main className='meeting-main-section'>
       <Navbar />
       <Compiler socketRef={socketRef} fun={fun} FileContent={fileContent} room={room} />
-      <Chat room={id} />
+       {/* <Chat room={id} /> */}
       <Footer />
     </main>
   )

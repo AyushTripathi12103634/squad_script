@@ -375,7 +375,48 @@ const Compiler = (props) => {
       console.log(e);
     }
   }
-
+  const [checkacc,setcheckacc] = useState(false);
+  const uploadtodb = async() => {
+    console.log(files[fileName])
+    const headers = {
+      "authorization":localStorage.getItem("auth"),
+    }
+    const res = await axios.post("/api/v1/file/files",{
+      "title":files[fileName].name,
+      "content":fileContent,
+      "language":files[fileName].language,
+      "meetingid":props.room,
+      "access":checkacc==null?false:checkacc,
+    },{
+      headers:headers
+    });
+    if (res.data.success){
+      toast.success('File Uploaded', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
+    }
+    else{
+      toast.error('Not uploaded', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
+    }
+  }
   return (
     <>
 

@@ -4,7 +4,7 @@ import "./Navbar.css";
 import {  HamburgetMenuClose, HamburgetMenuOpen } from "./Icons";
 import SSLogo from "../images/SquadScript.png";
 
-function NavBar({bgColor}) {
+function NavBar() {
   const [click, setClick] = useState(false);
   const [username, setusername] = useState("");
 
@@ -15,7 +15,7 @@ function NavBar({bgColor}) {
   const handleClick = () => setClick(!click);
   return (
     <>
-      <nav className="navbar" style={{ backgroundColor: bgColor }}>
+      <nav className="navbar" >
         <div className="nav-container">
           <NavLink to="/" className="nav-logo">
             <img src={SSLogo} alt="/"></img>

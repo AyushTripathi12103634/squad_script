@@ -10,6 +10,7 @@ import TNC from './Pages/TNC';
 import PrivacyPolicy from './Pages/PrivacyPolicy';
 import Contact from './Pages/Contact';
 import Landing from './Pages/Landing';
+import FilesPage from './Pages/File';
 import { ToastContainer } from 'react-toastify';
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/tnc" element={<TNC />} />
+      <Route path="/seefile" element={<FilesPage/>} />
     </Routes>
     </BrowserRouter>
     <ToastContainer

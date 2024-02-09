@@ -4,10 +4,12 @@
     height: 20%;
     padding-top: 20px;
     bottom: 0;
-    background-color: #1e1e1e;
+    background-color: #040514;
     color: white;
 }
 .footer-links{
     text-decoration: none;
     color: white;
+    margin: 0 10px; /* Add horizontal spacing */
+    font-weight: bold; /* Make the text bold */
 }
