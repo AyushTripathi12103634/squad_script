@@ -3,17 +3,20 @@
     display: inline;
     width: 550px;
 }
-.compiler-output .compiler-textarea{
+.compiler-output .compiler-textarea {
     word-wrap: break-word;
-    overflow-y:scroll;
-    height: 100px;
+    overflow-y: scroll;
+    height: 250px;
+    width: 450px;
     resize: none;
     bottom: 35px;
     position: relative;
-}
+    /* Other styles as needed */
+  }
+  
 #compiler-inputhandler{
     height: 250px;
-    /* width: 500px; */
+    width: 450px;
     resize: none;
     bottom: 50px;
     position: relative;
@@ -22,16 +25,19 @@
     top:50px;
     position: relative;
     /* height: 330px; */
-    width: 500px;
+    width: 300px;
 }
 .trial{
     position: relative;
     width: fit-content;
-    left: 350px;
+    /* left: 350px; */
+   /* border: 3px solid red; */
+   /* display: flex;
+   justify-content: flex-start; */
 }
 .input-div{
     position: relative;
     width: fit-content;
-    left: 1000px;
-    bottom: 390px;
+    left: 700px;
+    bottom: 500px;
 }

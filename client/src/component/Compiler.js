@@ -425,8 +425,9 @@ const Compiler = (props) => {
   return (
     <>
 
+      <div className='d-flex justify-content-evenly' style={{"width":"1250px" ,"height":"530px"}}>
       <div className='trial'>
-        <div className={`w-${useeditorwidth?"100":"75"} d-flex`}>
+        <div className={`w-100" d-flex`}>
         <select className='form-select bg-dark text-light' id="compiler-languages" onChange={handleLanguageChange} value={fileName}>
           {Object.keys(files).map((key) => (
             <option key={key} value={key}>
@@ -442,7 +443,7 @@ const Compiler = (props) => {
         <Editor
           height="50vh"
           theme={editortheme}
-          width={useeditorwidth ? editorwidth : props.width}
+          width={editorwidth}
           path={file.name}
           language={file.editor_name}
           value={fileContent}
@@ -514,18 +515,20 @@ const Compiler = (props) => {
         <button className='btn btn-dark ms-4' onClick={changeterminal}>{isTerminalOpen ? 'Close Terminal' : 'Open Terminal'}</button>
       </div>
       <div className='input-div'>
-      {isTerminalOpen && (
-          <div className='compiler-output me-5'>
+      
+      </div>
+      <div>
+          <div className='compiler-output me-5 p-0' style={{"position":"relative","right":"70px"}}>
             <textarea id="compiler-inputhandler" className='form-control compiler-textarea' onChange={handleinputchange}></textarea>
             {!executionerror ? (
-              <textarea className='form-control compiler-textarea' readOnly>
+              <textarea className='form-control compiler-textarea' style={{"height":"200px"}} readOnly>
                 {`Output: ${output}\nTime Taken: ${executiontime}\nSpace Taken: ${executionspace}`}
               </textarea>
             ) : (
-              <textarea className='form-control compiler-textarea' readOnly>{`Error: ${executionerror}`}</textarea>
+              <textarea className='form-control compiler-textarea' style={{"height":"200px"}} readOnly>{`Error: ${executionerror}`}</textarea>
             )}
           </div>
-        )}
+      </div>
       </div>
     </>
   );

@@ -3,7 +3,6 @@ import Login from './Pages/Login';
 import About from './Pages/About';
 import Join from './Pages/Join';
 import Profile from './Pages/Profile';
-import Meeting from './Pages/Meeting';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ForgotPassword from './Pages/ForgotPassword';
 import TNC from './Pages/TNC';
@@ -24,7 +23,6 @@ function App() {
       <Route path="/join" element={<Join />} />
       <Route path="/about" element={<About />} />
       <Route path="/forgotpassword" element={<ForgotPassword />} />
-      <Route path="/meeting/:meet_id" element={<Meeting />} />
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/tnc" element={<TNC />} />
