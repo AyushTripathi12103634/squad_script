@@ -9,7 +9,7 @@
 }
 
 .navbar {
-  background-color: #1e1e1e;
+  background-color: #040514;;
   height: 80px;
   display: flex;
   justify-content: center;
@@ -126,7 +126,7 @@
   }
 
   .nav-menu.active {
-    background: #1f5156;
+    background: #040514;
     left: 0px;
     opacity: 1;
     transition: all 0.5s ease;
@@ -134,7 +134,7 @@
   }
 
   .nav-item .active {
-    color: #ffdd40;
+    color: #4BC286;
     border: none;
   }
 
@@ -158,6 +158,6 @@
     width: 2rem;
     height: 2rem;
     cursor: pointer;
-    color: #ffdd40;
+    color: #4BC286;
   }
 }
