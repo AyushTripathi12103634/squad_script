@@ -2,6 +2,8 @@
 
 ## Ayush Kumar Tripathi 12103634 and Mohak Tiwari 12108526
 
+## Video Demo Link: https://drive.google.com/file/d/1ZwNJEN-NhAKc7PZczeI0pKAPm0vhXyGV/view?usp=sharing
+
 ### Project Name: SquadScript
 
 - **Which problem Project is Solving?**
