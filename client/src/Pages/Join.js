@@ -2,17 +2,50 @@ import axios from 'axios';
 import Footer from '../component/Footer';
 import Navbar from '../component/Navbar';
 import './Join.css';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Bounce, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-function Join() {
-  const [meetid, setmeetid] = useState("");
+import {
+  MeetingProvider,
+  MeetingConsumer,
+  useMeeting,
+  useParticipant,
+} from "@videosdk.live/react-sdk";
+import { authToken, createMeeting } from "./VC/API";
+import ReactPlayer from "react-player";
+import { HiMiniVideoCamera, HiMiniVideoCameraSlash } from "react-icons/hi2";
+import { FaMicrophoneSlash, FaMicrophone, FaPhoneSlash } from "react-icons/fa";
+import Compiler from '../component/Compiler';
+import Chat from '../component/Chat';
+import { io } from "socket.io-client";
+
+function JoinScreen({ getMeetingAndToken }) {
+  const [meetid, setmeetid] = useState(null);
   const [islogin, setislogin] = useState(false);
-  const navigate = useNavigate();
-  const handlemeetid = (e) => {
-    setmeetid(e.target.value);
+  const checkislogin = async () => {
+    if (localStorage.getItem("auth") === "") {
+      return false;
+    }
+    else {
+      const headers = {
+        "authorization": localStorage.getItem("auth")
+      }
+      const check = await axios.post("/api/v1/auth/islogin", {
+        name: localStorage.getItem("name"),
+        email: localStorage.getItem("email"),
+        username: localStorage.getItem("usernmae"),
+      }, { headers: headers });
+      console.log(check.data.success, check);
+      setislogin(check.data.success);
+      return check.data.success;
+    };
   }
+
+  useEffect(() => {
+    checkislogin();
+  }, [])
+  const navigate = useNavigate();
   const join = async (e) => {
     e.preventDefault();
     if (!islogin) {
@@ -44,37 +77,11 @@ function Join() {
         });
       }
       else {
+        await getMeetingAndToken(meetid);
         const headers = {
           "Authorization": localStorage.getItem("auth")
         }
-        const response = await axios.post(`/api/v1/meet/joinmeet/${meetid}`, {}, { headers: headers });
-        if (response.data.success) {
-          toast.success('Joined meeting', {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-            transition: Bounce,
-          });
-          navigate(`/meeting/${response.data.meet_id}`);
-        }
-        else{
-          toast.error(`${response.data.message}`, {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-            transition: Bounce,
-          });
-        }
+        // const response = await axios.post(`/api/v1/meet/joinmeet/${meetid}`, {}, { headers: headers });
       }
     }
   }
@@ -95,63 +102,225 @@ function Join() {
       });
       navigate("/login");
     }
+    await getMeetingAndToken(meetid);
     const headers = {
       "Authorization": localStorage.getItem("auth")
     }
-    const response = await axios.post("/api/v1/meet/createmeet", {}, { headers: headers });
-    if (response.data.success)
-      toast.success('Meeting created successfully', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-        transition: Bounce,
-      });
-    else
-      toast.error('Failed to Create meeting. Try again or contact admin', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-        transition: Bounce,
-      });
-    navigate(`/meeting/${response.data.meeting_id}`);
+    // const response = await axios.post("/api/v1/meet/createmeet", {}, { headers: headers });
   }
-  const checkislogin = async () => {
-    if (localStorage.getItem("auth") === "") {
-      return false;
+  return (
+    <div className='meet-join'>
+      <form className='join-meet'>
+        <input className='form-control w-50' placeholder='Enter meet id' onChange={(e) => { setmeetid(e.target.value) }}></input>
+        <button className='btn join-button' onClick={join}>Join</button>
+      </form>
+      <form className='create-meet'>
+        <button className='btn create-button w-50' onClick={create}>Create a new meeting</button>
+      </form>
+    </div>
+  );
+}
+
+function ParticipantView(props) {
+  const micRef = useRef(null);
+  const { webcamStream, micStream, webcamOn, micOn, isLocal, displayName } =
+    useParticipant(props.participantId);
+
+  const videoStream = useMemo(() => {
+    if (webcamOn && webcamStream) {
+      const mediaStream = new MediaStream();
+      mediaStream.addTrack(webcamStream.track);
+      return mediaStream;
     }
-    else {
-      const headers = {
-        "authorization": localStorage.getItem("auth")
+  }, [webcamStream, webcamOn]);
+
+  useEffect(() => {
+    if (micRef.current) {
+      if (micOn && micStream) {
+        const mediaStream = new MediaStream();
+        mediaStream.addTrack(micStream.track);
+
+        micRef.current.srcObject = mediaStream;
+        micRef.current
+          .play()
+          .catch((error) =>
+            console.error("videoElem.current.play() failed", error)
+          );
+      } else {
+        micRef.current.srcObject = null;
       }
-      const check = await axios.post("/api/v1/auth/islogin", {
-        name: localStorage.getItem("name"),
-        email: localStorage.getItem("email"),
-        username: localStorage.getItem("usernmae"),
-      }, { headers: headers });
-      console.log(check.data.success,check);
-      setislogin(check.data.success);
-      return check.data.success;
-    };
+    }
+  }, [micStream, micOn]);
+
+  return (
+    <div className='video'>
+      <p>
+        Participant: {displayName} | {webcamOn ? <HiMiniVideoCamera /> : <HiMiniVideoCameraSlash />} | Mic:{" "}
+        {micOn ? <FaMicrophone /> : <FaMicrophoneSlash />}
+      </p>
+      <audio ref={micRef} autoPlay playsInline muted={isLocal} />
+      {webcamOn && (
+        <ReactPlayer
+          //
+          playsinline // extremely crucial prop
+          pip={false}
+          light={false}
+          controls={false}
+          muted={true}
+          playing={true}
+          //
+          url={videoStream}
+          //
+          height={"300px"}
+          width={"300px"}
+          onError={(err) => {
+            console.log(err, "participant video error");
+          }}
+        />
+      )}
+    </div>
+  );
+}
+
+function Controls() {
+  const { leave, toggleMic, toggleWebcam } = useMeeting();
+  return (
+    <div>
+      <button className='btn btn-dark' onClick={() => toggleMic()}><FaMicrophone /></button>
+      <button className='btn btn-dark' onClick={() => toggleWebcam()}><HiMiniVideoCamera /></button>
+      <button className='btn btn-danger' onClick={() => leave()}><FaPhoneSlash /></button>
+    </div>
+  );
+}
+
+function MeetingView(props) {
+  const [joined, setJoined] = useState(null);
+  //Get the method which will be used to join the meeting.
+  //We will also get the participants list to display all participants
+  const { join, participants } = useMeeting({
+    //callback for when meeting is joined successfully
+    onMeetingJoined: () => {
+      setJoined("JOINED");
+    },
+    //callback for when meeting is left
+    onMeetingLeft: () => {
+      props.onMeetingLeave();
+    },
+  });
+  const joinMeeting = () => {
+    setJoined("JOINING");
+    join();
+  };
+
+  const room = props.meetingId;
+  const [editorwidth, seteditorwidth] = useState('960px');
+
+  const [fileContent, setFileContent] = useState("");
+  const [messages, setMessages] = useState([]);
+
+  const socketRef = useRef();
+
+  const fun1 = (value) => {
+    if (socketRef.current) {
+      socketRef.current.emit('code', { room, text: value });
+    }
   }
 
+  const sendMessage = (message) => {
+    const username = localStorage.getItem('username');
+    socketRef.current.emit('message', { room, text: message, username });
+  };
+
   useEffect(()=>{
-    checkislogin();
-  },[])
+    const serverurl = process.env.SEVRER_URL || 'http://localhost:5000';
+    socketRef.current = io.connect(serverurl);
+
+    socketRef.current.on('connect_error', () => {
+      window.location.reload();
+    });
+
+    socketRef.current.emit('join room', room);
+
+    socketRef.current.on('code', (text) => {
+      setFileContent(text);
+    });
+
+    socketRef.current.on('message', (message) => {
+      setMessages(prevMessages => [...prevMessages, message]);
+    });
+
+    return () => {
+      socketRef.current.disconnect();
+    };
+  }, [room]);
 
   return (
     <>
-      <Navbar />
-      <div className='join-main'>
+    <Compiler socketRef={socketRef} fun={fun1} FileContent={fileContent} room={room} width={editorwidth} />
+    <div className='w-25 bg-dark'>
+      <Chat messages={messages} sendMessage={sendMessage} />
+    </div>
+    <div className="container">
+      <h3>Meeting Id: {props.meetingId}</h3>
+      {joined && joined == "JOINED" ? (
+        <div>
+          <Controls />
+          //For rendering all the participants in the meeting
+          {[...participants.keys()].map((participantId) => (
+            <ParticipantView
+              participantId={participantId}
+              key={participantId}
+            />
+          ))}
+        </div>
+      ) : joined && joined == "JOINING" ? (
+        <p>Joining the meeting...</p>
+      ) : (
+        <button className='btn btn-dark' onClick={joinMeeting}>Join</button>
+      )}
+    </div>
+    </>
+  );
+}
+
+const Join = () => {
+  const [meetingId, setMeetingId] = useState(null);
+  const [username, setUsername] = useState("");
+
+  useEffect(()=>{
+    setUsername(localStorage.getItem("username"));
+  },[])
+
+  //Getting the meeting id by calling the api we just wrote
+  const getMeetingAndToken = async (id) => {
+    const meetingId =
+      id == null ? await createMeeting({ token: authToken }) : id;
+    setMeetingId(meetingId);
+  };
+
+  //This will set Meeting Id to null when meeting is left or ended
+  const onMeetingLeave = () => {
+    setMeetingId(null);
+  };
+
+  return authToken && meetingId ? (
+    <>
+      <MeetingProvider
+        config={{
+          meetingId,
+          micEnabled: true,
+          webcamEnabled: true,
+          name: username,
+        }}
+        token={authToken}
+      >
+        <MeetingView meetingId={meetingId} onMeetingLeave={onMeetingLeave} />
+      </MeetingProvider>
+      </>
+      ) : (
+        <>
+        <Navbar />
+        <div className='join-main'>
         <div className='join-content'>
           <div className='left-container'>
             <div className='left-heading w-75'>
@@ -160,22 +329,14 @@ function Join() {
             <div className='left-content w-50'>
               <p>Our enhanced premium group project meeting platform, originally designed for secure business engagements as Squad Script, is now available to a broader audience at no cost.</p>
             </div>
-            <div className='meet-join'>
-              <form className='join-meet'>
-                <input className='form-control w-50' placeholder='Enter meet id' onChange={handlemeetid}></input>
-                <button className='btn join-button' onClick={join}>Join</button>
-              </form>
-              <form className='create-meet'>
-                <button className='btn create-button w-50' onClick={create}>Create a new meeting</button>
-              </form>
-            </div>
+            <JoinScreen getMeetingAndToken={getMeetingAndToken} />
           </div>
           <div className='right-container ms-5'></div>
         </div>
       </div>
       <Footer />
-    </>
-  );
+        </>
+      );
 }
 
 export default Join;

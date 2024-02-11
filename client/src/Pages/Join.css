@@ -90,3 +90,16 @@
         /* flex-direction: row; */
     }
 }
+
+
+/* Joined meeting page */
+
+.video{
+    display: flex;
+    justify-content: space-around;
+    overflow-x: scroll;
+    height: fit-content;
+    width: 80%;
+    top: 50px;
+    position: absolute;
+}
