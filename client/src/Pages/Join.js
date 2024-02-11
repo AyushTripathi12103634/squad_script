@@ -19,6 +19,7 @@ import { FaMicrophoneSlash, FaMicrophone, FaPhoneSlash } from "react-icons/fa";
 import Compiler from '../component/Compiler';
 import Chat from '../component/Chat';
 import { io } from "socket.io-client";
+import gif from '../images/230700872-d5f44b85-56c7-4e27-80a4-6e2db901e60c.gif'
 
 function JoinScreen({ getMeetingAndToken }) {
   const [meetid, setmeetid] = useState(null);
@@ -60,10 +61,11 @@ function JoinScreen({ getMeetingAndToken }) {
         theme: "dark",
         transition: Bounce,
       });
-      // navigate("/login");
+      navigate("/login");
     }
     else {
-      if (meetid === "") {
+      console.log(meetid)
+      if (meetid === null) {
         toast.error('Meeting ID is required', {
           position: "top-right",
           autoClose: 5000,
@@ -77,7 +79,7 @@ function JoinScreen({ getMeetingAndToken }) {
         });
       }
       else {
-        await getMeetingAndToken(meetid);
+          await getMeetingAndToken(meetid);
         const headers = {
           "Authorization": localStorage.getItem("auth")
         }
@@ -153,13 +155,13 @@ function ParticipantView(props) {
   }, [micStream, micOn]);
 
   return (
-    <div className='video'>
+    <div className='video' style={{"height":"200px","width":"200px"}}>
       {/* <p>
         Participant: {displayName} | {webcamOn ? <HiMiniVideoCamera /> : <HiMiniVideoCameraSlash />} | Mic:{" "}
         {micOn ? <FaMicrophone /> : <FaMicrophoneSlash />}
       </p> */}
       <audio ref={micRef} autoPlay playsInline muted={isLocal} />
-      {webcamOn && (
+      {webcamOn ? (
         <ReactPlayer
           //
           playsinline // extremely crucial prop
@@ -177,7 +179,11 @@ function ParticipantView(props) {
             console.log(err, "participant video error");
           }}
         />
-      )}
+      ):(
+<div className='align-items-center'>
+<p className='text-light'>{displayName}</p>
+
+  </div>      )}
     </div>
   );
 }
@@ -346,7 +352,9 @@ const Join = () => {
             </div>
             <JoinScreen getMeetingAndToken={getMeetingAndToken} />
           </div>
-          <div className='right-container ms-5'></div>
+          <div className='right-container ms-5 p-0' style={{"objectFit":"contain"}}>
+            <img src={gif} alt='' style={{"position":"relative","right":"190px","top":"15px"}}></img>
+          </div>
         </div>
       </div>
       <Footer />
