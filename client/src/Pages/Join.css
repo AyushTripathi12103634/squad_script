@@ -1,3 +1,6 @@
+:root{
+background-color: #1e1e1e;
+}
 .join-main{
     min-height: 100vh;
     display: grid;
@@ -37,6 +40,67 @@
     background-color: #1e1e1e;
     color: white;
 }
+/* Assuming you have a container for participant views */
+.participant-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Adjust the width as needed */
+    gap: 20px; /* Add spacing between participant views */
+  }
+  
+  .vc-main{
+    margin: 0;
+    width: 100vw;
+    background-color: #1e1e1e;
+  }
+  /* Style for each participant view */
+  .video-vc{
+    display: flex;
+  
+    background-color: #1e1e1e;/* border: 2px solid yellow; */
+    overflow-x: hidden;
+    overflow-y: hidden;
+    object-fit: contain;
+    
+  }
+  .video {
+    /* Add any other styling you need for the participant view */
+    display: flex;
+    /* border: 2px solid red; */
+    /* padding: 10px; */
+    text-align: center;
+    margin: 0 1.5rem;
+    padding: 0;
+  }
+ 
+  
+  
+  .join-page{
+    display: flex;
+    justify-content: space-between;
+    /* border: 15px solid green; */
+    height: fit-content;
+    background-color: #1e1e1e;
+  }
+  .compiler-side{
+    height: fit-content;
+     /* border: 3px solid magenta; */
+     padding-top: 20px;
+  }
+  .chat-side{
+    /* border: 3px solid yellow; */
+    background-color: dark;
+    padding: 0;
+    height: fit-content;
+  }
+  .heading-meet{
+    height: 25px;
+  }
+  .small-h3{
+    font-size: 14px;
+  }
+  .meet-controls{
+    background-color: #1e1e1e;
+  }
 @media (max-width: 1200px){
     .join-main{
         display: flex;
@@ -94,7 +158,7 @@
 
 /* Joined meeting page */
 
-.video{
+/* .video{
     display: flex;
     justify-content: space-around;
     overflow-x: scroll;
@@ -102,4 +166,4 @@
     width: 80%;
     top: 50px;
     position: absolute;
-}
+} */

@@ -60,7 +60,7 @@ function JoinScreen({ getMeetingAndToken }) {
         theme: "dark",
         transition: Bounce,
       });
-      navigate("/login");
+      // navigate("/login");
     }
     else {
       if (meetid === "") {
@@ -100,7 +100,7 @@ function JoinScreen({ getMeetingAndToken }) {
         theme: "dark",
         transition: Bounce,
       });
-      navigate("/login");
+      // navigate("/login");
     }
     await getMeetingAndToken(meetid);
     const headers = {
@@ -154,10 +154,10 @@ function ParticipantView(props) {
 
   return (
     <div className='video'>
-      <p>
+      {/* <p>
         Participant: {displayName} | {webcamOn ? <HiMiniVideoCamera /> : <HiMiniVideoCameraSlash />} | Mic:{" "}
         {micOn ? <FaMicrophone /> : <FaMicrophoneSlash />}
-      </p>
+      </p> */}
       <audio ref={micRef} autoPlay playsInline muted={isLocal} />
       {webcamOn && (
         <ReactPlayer
@@ -171,8 +171,8 @@ function ParticipantView(props) {
           //
           url={videoStream}
           //
-          height={"300px"}
-          width={"300px"}
+          height={"200px"}
+          width={"200px"}
           onError={(err) => {
             console.log(err, "participant video error");
           }}
@@ -185,16 +185,17 @@ function ParticipantView(props) {
 function Controls() {
   const { leave, toggleMic, toggleWebcam } = useMeeting();
   return (
-    <div>
+    <div className='meet-controls d-flex justify-content-center  pt-4'>
       <button className='btn btn-dark' onClick={() => toggleMic()}><FaMicrophone /></button>
-      <button className='btn btn-dark' onClick={() => toggleWebcam()}><HiMiniVideoCamera /></button>
-      <button className='btn btn-danger' onClick={() => leave()}><FaPhoneSlash /></button>
+      <button className='btn btn-dark ms-3' onClick={() => toggleWebcam()}><HiMiniVideoCamera /></button>
+      <button className='btn btn-danger ms-3' onClick={() => leave()}><FaPhoneSlash /></button>
     </div>
   );
 }
 
 function MeetingView(props) {
   const [joined, setJoined] = useState(null);
+
   //Get the method which will be used to join the meeting.
   //We will also get the participants list to display all participants
   const { join, participants } = useMeeting({
@@ -207,13 +208,14 @@ function MeetingView(props) {
       props.onMeetingLeave();
     },
   });
+
   const joinMeeting = () => {
     setJoined("JOINING");
     join();
   };
 
   const room = props.meetingId;
-  const [editorwidth, seteditorwidth] = useState('960px');
+  const [editorwidth, seteditorwidth] = useState('1100px');
 
   const [fileContent, setFileContent] = useState("");
   const [messages, setMessages] = useState([]);
@@ -256,32 +258,45 @@ function MeetingView(props) {
 
   return (
     <>
-    <Compiler socketRef={socketRef} fun={fun1} FileContent={fileContent} room={room} width={editorwidth} />
-    <div className='w-25 bg-dark'>
-      <Chat messages={messages} sendMessage={sendMessage} />
-    </div>
-    <div className="container">
-      <h3>Meeting Id: {props.meetingId}</h3>
+       <div className=" vc-main d-flex align-items-center">
+        <div className='heading-meet'> <h3 className='small-h3 text-light '>Meeting Id: {props.meetingId}</h3></div>
+     
       {joined && joined == "JOINED" ? (
-        <div>
-          <Controls />
-          //For rendering all the participants in the meeting
+        <div className='video-vc m-0' >
+          
+          
           {[...participants.keys()].map((participantId) => (
             <ParticipantView
               participantId={participantId}
               key={participantId}
             />
           ))}
+          
         </div>
       ) : joined && joined == "JOINING" ? (
-        <p>Joining the meeting...</p>
+        <p className='text-light'>Joining the meeting...</p>
       ) : (
         <button className='btn btn-dark' onClick={joinMeeting}>Join</button>
       )}
     </div>
+    
+    {/* Render Compiler and Controls only when meeting is joined */}
+    {joined && joined == "JOINED" && (
+      <div className='join-page'>
+        <div className="compiler-side">
+          <Compiler socketRef={socketRef} fun={fun1} FileContent={fileContent} room={room} width={editorwidth} />
+        </div>
+        <div className='chat-side'>
+          <Chat messages={messages} sendMessage={sendMessage} />
+        </div>
+      </div>
+    )}
+   
+    {joined && joined == "JOINED" && <Controls />}
     </>
   );
 }
+
 
 const Join = () => {
   const [meetingId, setMeetingId] = useState(null);
