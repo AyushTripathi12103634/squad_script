@@ -240,7 +240,7 @@ function MeetingView(props) {
   };
 
   useEffect(()=>{
-    const serverurl = process.env.SEVRER_URL || 'http://localhost:5000';
+    const serverurl = process.env.SEVRER_URL || 'https://squadscript.onrender.com';
     socketRef.current = io.connect(serverurl);
 
     socketRef.current.on('connect_error', () => {
