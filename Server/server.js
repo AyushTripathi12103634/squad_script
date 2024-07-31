@@ -18,11 +18,19 @@ dotenv.config();
 connectDB();
 
 const app = express();
-const server = createServer(app);
 const allowedOrigins = [
   process.env.SERVER_URL || "http://localhost:3000",
   "http://localhost:3000"
 ];
+
+app.use(cors({
+  origin: allowedOrigins, 
+  methods: ["GET", "POST"],
+  credentials: true,
+}));
+
+const server = createServer(app);
+
 const io = new Server(server, {
   cors: {
     origin: allowedOrigins,
@@ -55,7 +63,6 @@ io.on('connection',(socket) => {
 });
 
 app.use(express.json());
-app.use(cors());
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/meet", meetRoute);
 app.use("/api/v1/rapidapi", rapidApiRoute);
