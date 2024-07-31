@@ -21,8 +21,7 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    // origin: process.env.SERVER_URL || "http://localhost:3000",
-    origin: "*",
+    origin: [process.env.SERVER_URL && "http://localhost:3000"],
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -43,6 +42,7 @@ io.on('connection',(socket) => {
 
   socket.on('code', (data) => {
     socket.in(data.room).emit('code', data.text);
+    console.log(data.room,data.text);
   });
 
   socket.on('disconnect', () => {
