@@ -66,6 +66,11 @@ io.on('connection', (socket) => {
     });
   });
 
+  socket.on('message', (data) => {
+    console.log('message: ', data.text);
+    io.to(data.room).emit('message', { username: data.username, text: data.text });
+  });
+
   socket.on('disconnect', () => {
     for (let room in userCount) {
       if (userCount.hasOwnProperty(room) && socket.rooms.has(room)) {
