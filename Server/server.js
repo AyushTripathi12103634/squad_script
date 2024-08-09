@@ -10,7 +10,7 @@ import cors from 'cors';
 import { Server } from "socket.io";
 import { createServer } from "http";
 import './cronjob/cronJobs.js';
-import Language from "./Languages.json" assert {type: 'json'}; // Ensure this path is correct
+import Language from "./Languages.json" assert {type: 'json'};
 
 
 dotenv.config();
@@ -36,6 +36,10 @@ const applyOperation = (doc, operation) => {
     doc = doc.slice(0, index) + text + doc.slice(index);
   } else if (type === 'delete') {
     doc = doc.slice(0, index) + doc.slice(index + text.length);
+  } else if(type==='replace') {
+    const endIndex = index + text.length;
+    console.log(doc.slice(0,index),doc.slice(endIndex),text,text.length)
+    doc = doc.slice(0, index) + doc.slice(endIndex);
   }
   return doc;
 };
@@ -89,7 +93,7 @@ app.use(express.json());
 app.use(cors());
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/meet", meetRoute);
-app.use("/api/v1/rapidapi", authRoute);
+app.use("/api/v1/rapidapi", rapidApiRoute);
 app.use("/api/v1/file", fileRoute);
 
 app.use("/", (req, res) => {
