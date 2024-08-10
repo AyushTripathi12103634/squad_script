@@ -1,49 +1,54 @@
-import './App.css';
-import Login from './Pages/Login';
-import About from './Pages/About';
-import Join from './Pages/Join';
-import Profile from './Pages/Profile';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import ForgotPassword from './Pages/ForgotPassword';
-import TNC from './Pages/TNC';
-import PrivacyPolicy from './Pages/PrivacyPolicy';
-import Contact from './Pages/Contact';
-import Landing from './Pages/Landing';
-import FilesPage from './Pages/File';
-import { ToastContainer } from 'react-toastify';
-
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import { Provider } from "react-redux";
+import Store from "./Redux/Store";
+import About from "./Pages/About";
+import Landing from "./Pages/Landing";
+import Join from "./Pages/Join";
+import Contact from "./Pages/Contact";
+import TNC from "./Pages/TNC";
+import PrivacyPolicy from "./Pages/PrivacyPolicy";
+import LoginSignup from "./Pages/LoginSignup";
+import Profile from "./Pages/Profile";
+import ForgotPassword from "./Pages/ForgotPassword";
+import MeetingView from "./Pages/MeetingView";
+import PrivateRoute from "./Routes/PrivateRoute";
 function App() {
   return (
     <>
-    <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<Landing />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/profile" element={<Profile />} />
-      <Route path="/join" element={<Join />} />
-      <Route path="/about" element={<About />} />
-      <Route path="/forgotpassword" element={<ForgotPassword />} />
-      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-      <Route path="/contact" element={<Contact />} />
-      <Route path="/tnc" element={<TNC />} />
-      <Route path="/seefile" element={<FilesPage/>} />
-    </Routes>
-    </BrowserRouter>
-    <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-        transition="Bounce"
-      />
+      <Provider store={Store}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/join" element={<Join />} />
+            <Route path="/user/" element={<PrivateRoute />}>
+              <Route path="room/:id" element={<MeetingView />} />
+            </Route>
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/tnc" element={<TNC />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/login-signup" element={<LoginSignup />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+          </Routes>
+        </BrowserRouter>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+          transition="Bounce"
+        />
+      </Provider>
     </>
-    );
+  );
 }
 
 export default App;

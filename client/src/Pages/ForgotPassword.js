@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import Navbar from '../component/Navbar';
-import Footer from '../component/Footer';
-import "./FogotPassword.css";
+import Navbar from '../Components/Navbar';
+import Footer from '../Components/Footer';
+import "./ForgotPassword.css";
 import axios from 'axios';
 import { Bounce, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -110,7 +110,7 @@ const ForgotPassword = () => {
                     theme: "dark",
                     transition: Bounce,
                 });
-                navigate("/login");
+                navigate("/login-signup");
 
             } catch (error) {
                 toast.error(`${error.response.data.message}`, {

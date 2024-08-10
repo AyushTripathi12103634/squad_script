@@ -1,9 +1,22 @@
-import React from "react";
-import Navbar from "../component/Navbar";
-import Footer from "../component/Footer";
+import React, { useEffect } from "react";
+import Navbar from "../Components/Navbar";
+import Footer from "../Components/Footer";
 import "./PrivacyPolicy.css";
 import { Link } from "react-router-dom";
+import ScrollReveal from "scrollreveal";
+
 const PrivacyPolicy = () => {
+  useEffect(() => {
+    const sr = ScrollReveal({
+      origin: "top",
+      distance: "80px",
+      duration: 2000,
+      reset: true,
+    });
+
+    sr.reveal(".privacy-content", { interval: 200 });
+  }, []);
+
   return (
     <>
       <Navbar />

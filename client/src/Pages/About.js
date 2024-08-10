@@ -1,59 +1,82 @@
-import Footer from '../component/Footer';
-import Navbar from '../component/Navbar';
-import './About.css';
-import { BiLogoLinkedin } from "react-icons/bi";
-import { BiLogoGithub } from "react-icons/bi";
-import { IconContext } from 'react-icons';
-import { Link } from 'react-router-dom';
-import About1 from '../images/About1.png';
-import About2 from '../images/About2.png';
-function AboutUs() {
+import React, { useEffect } from "react";
+import Navbar from "../Components/Navbar.js";
+import Footer from "../Components/Footer.js";
+import ScrollReveal from "scrollreveal";
+import "./About.css";
+import { BiLogoLinkedin, BiLogoGithub } from "react-icons/bi";
+import { Link } from "react-router-dom";
+import About1 from "../images/About1.png";
+import About2 from "../images/About2.png";
+
+function About() {
+  useEffect(() => {
+    const sr = ScrollReveal({
+      origin: "top",
+      distance: "80px",
+      duration: 2000,
+      reset: true,
+    });
+
+    sr.reveal(".new-about-main-card", { interval: 200 });
+  }, []);
+
   return (
-    <main className='about-main-section'>
+    <>
       <Navbar />
-      <div className='about-main-div'>
-        <div className='about-main-left my-5 mx-3'>
-          <div className='about-card'>
-            <div className='about-card-image'>
-              <img src={About1} alt='About1'></img>
-            </div>
-            <div className='about-card-name my-3'>
-              <h1>Ayush Tripathi</h1>
-            </div>
-            <div className='about-card-profile my-3'>
-              <h6>Full Stack Developer</h6>
-            </div>
-            <IconContext.Provider value={{color:"black"}}>
-              <div className='about-card-icons'>
-                <Link to="https://www.linkedin.com/in/ayush-tripathi-039a20220" target='_blank'><BiLogoLinkedin className='about-logo'></BiLogoLinkedin></Link>
-                <Link to="https://www.github.com/ayushtripathi12103634" target='_blank'><BiLogoGithub className='about-logo'></BiLogoGithub></Link>
+      <div className="new-about-main-section">
+        <div className="new-about-main-div">
+          <div className="new-about-main-card">
+            <div className="new-about-card">
+              <div className="new-about-card-image">
+                <img src={About1} alt="Ayush Tripathi"></img>
               </div>
-            </IconContext.Provider>
+              <div className="new-about-card-info">
+                <h1>Ayush Tripathi</h1>
+                <h6>Full Stack Developer</h6>
+                <div className="new-about-card-icons">
+                  <Link
+                    to="https://www.linkedin.com/in/ayush-tripathi-039a20220"
+                    target="_blank"
+                  >
+                    <BiLogoLinkedin className="new-about-logo" />
+                  </Link>
+                  <Link
+                    to="https://www.github.com/ayushtripathi12103634"
+                    target="_blank"
+                  >
+                    <BiLogoGithub className="new-about-logo" />
+                  </Link>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div className='about-main-right my-5 mx-3'>
-          <div className='about-card'>
-            <div className='about-card-image'>
-              <img src={About2} alt='About1'></img>
-            </div>
-            <div className='about-card-name my-3'>
-              <h1>Mohak Tiwari</h1>
-            </div>
-            <div className='about-card-profile my-3'>
-              <h6>Full Stack Developer</h6>
-            </div>
-            <IconContext.Provider value={{color:"black"}}>
-              <div className='about-card-icons'>
-                <Link to="https://www.linkedin.com/in/mohak-tiwari-b78198226/" target='_blank'><BiLogoLinkedin className='about-logo'></BiLogoLinkedin></Link>
-                <Link to="https://www.github.com/mohak1301" target='_blank'><BiLogoGithub className='about-logo'></BiLogoGithub></Link>
+          <div className="new-about-main-card">
+            <div className="new-about-card">
+              <div className="new-about-card-image">
+                <img src={About2} alt="Mohak Tiwari"></img>
               </div>
-            </IconContext.Provider>
+              <div className="new-about-card-info">
+                <h1>Mohak Tiwari</h1>
+                <h6>Full Stack Developer</h6>
+                <div className="new-about-card-icons">
+                  <Link
+                    to="https://www.linkedin.com/in/mohak-tiwari-b78198226/"
+                    target="_blank"
+                  >
+                    <BiLogoLinkedin className="new-about-logo" />
+                  </Link>
+                  <Link to="https://www.github.com/mohak1301" target="_blank">
+                    <BiLogoGithub className="new-about-logo" />
+                  </Link>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
       <Footer />
-    </main>
+    </>
   );
 }
 
-export default AboutUs;
+export default About;

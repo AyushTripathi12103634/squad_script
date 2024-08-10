@@ -1,5 +1,5 @@
 //This is the Auth token, you will use it to generate a meeting and connect to it
-export const authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlrZXkiOiJiNDJhZThlMy03NjQ1LTRkOGYtYjAxMi03NjY2NjI1OTJkMTciLCJwZXJtaXNzaW9ucyI6WyJhbGxvd19qb2luIl0sImlhdCI6MTcwNzU3NDM4MywiZXhwIjoxODY1MzYyMzgzfQ.CmJzg2Swgtz8FvMZ0DNonxHkLhZQSBF75RO_pqAfZ5I";
+export const authToken = process.env.REACT_APP_AUTH_TOKEN_VSDK;
 // API call to create a meeting
 export const createMeeting = async ({ token }) => {
   const res = await fetch(`https://api.videosdk.live/v2/rooms`, {

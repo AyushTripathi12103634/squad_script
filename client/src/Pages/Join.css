@@ -1,169 +1,230 @@
-:root{
-background-color: #1e1e1e;
+/* Base Styles */
+.join-main {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensures full height, including footer */
 }
-.join-main{
-    min-height: 100vh;
-    display: grid;
-    place-content: center;
-    box-sizing: border-box;
-    box-shadow: 25px 30px 55px #1e1e1e;
+
+.join-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1; /* Allows this section to take up available space */
+  padding: 20px;
+  box-sizing: border-box;
 }
-.join-content{
+
+.join-left-container,
+.join-right-container {
+  width: 50%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.join-left-heading h1 {
+  font-weight: 800;
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+.join-left-content {
+  font-weight: 550;
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.join-right-container img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5%;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.joinscreen-form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+}
+
+.form-control {
+  margin-bottom: 10px;
+}
+
+.create-button,.join-button {
+  background-color: black;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.create-meet {
+  margin-top: 10px;
+}
+
+/* Responsive Styles for Medium Screens (Tablets, Small Laptops) */
+@media (max-width: 1024px) {
+  .join-content {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .join-left-container,
+  .join-right-container {
     width: 100%;
-    display: flex;
-    justify-content: space-around;
-    flex-direction: row; 
-}
-.left-container{
-    height: 500px;
-    width: 600px;
-}
-.right-container{
-    height: 500px;
-    width: 400px;
-    overflow-y: scroll;
-    box-shadow: 25px 30px 55px #1e1e1e;
-    border-radius: 13px;
-    overflow: hidden;
-}
-.left-heading{
-    text-wrap:wrap;
-}
-.join-button{
-    background-color: #1e1e1e;
-    color: white;
-    position: relative;
-    bottom: 38px;
-    left: 247px;
-}
-.create-button{
-    background-color: #1e1e1e;
-    color: white;
-}
-/* Assuming you have a container for participant views */
-.participant-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Adjust the width as needed */
-    gap: 20px; /* Add spacing between participant views */
-  }
-  
-  .vc-main{
     margin: 0;
-    width: 100vw;
-    background-color: #1e1e1e;
+    padding: 10px;
   }
-  /* Style for each participant view */
-  .video-vc{
-    display: flex;
-  
-    background-color: #1e1e1e;/* border: 2px solid yellow; */
-    overflow-x: hidden;
-    overflow-y: hidden;
-    object-fit: contain;
-    
+
+  .join-left-heading h1 {
+    font-size: 1.8rem;
   }
-  .video {
-    /* Add any other styling you need for the participant view */
-    display: flex;
-    /* border: 2px solid red; */
-    /* padding: 10px; */
-    text-align: center;
-    margin: 0 1.5rem;
-    padding: 0;
+
+  .join-left-content {
+    font-size: 1rem;
   }
- 
-  
-  
-  .join-page{
-    display: flex;
-    justify-content: space-between;
-    /* border: 15px solid green; */
-    height: fit-content;
-    background-color: #1e1e1e;
+
+  .joinscreen-form{
+    /* display: flex; */
+    justify-content: center;
   }
-  .compiler-side{
-    height: fit-content;
-     /* border: 3px solid magenta; */
-     padding-top: 20px;
+  .create-button,.join-button{
+    width: 30%;
   }
-  .chat-side{
-    /* border: 3px solid yellow; */
-    background-color: dark;
-    padding: 0;
-    height: fit-content;
-  }
-  .heading-meet{
-    height: 25px;
-  }
-  .small-h3{
-    font-size: 14px;
-  }
-  .meet-controls{
-    background-color: #1e1e1e;
-  }
-@media (max-width: 1200px){
-    .join-main{
-        display: flex;
-        justify-content: center;
-    }
-    .join-content{
-        width: 90%;
-        display: flex;
-        justify-content: space-evenly;
-    }
-    .left-container{
-        height: 500px;
-        width: 500px;
-    }
-    .right-container{
-        height: 500px;
-        width: 500px;
-    }
-    .join-button{
-        left: 200px;
-    }
-}
-@media (max-width: 992px){
-    .join-button{
-        left: 150px;
-    }
-}
-@media (max-width: 850px){
-    .join-content{
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-    .left-container, .right-container{
-        margin: 0 !important;
-    }
-    .join-button{
-        left: 200px;
-    }
-}
-@media (max-width: 576px){
-    .left-container{
-        width: 300px;
-    }
-    .right-container{
-        /* width: 300px; */
-        display: none;
-    }
-    .join-content{
-        justify-content: space-evenly;
-        /* flex-direction: row; */
-    }
 }
 
+/* Responsive Styles for Small Screens (Large Phones, Small Tablets) */
+@media (max-width: 768px) {
+  .join-left-heading h1 {
+    font-size: 1.5rem;
+  }
 
-/* Joined meeting page */
+  .join-left-content {
+    font-size: 0.9rem;
+  }
 
-/* .video{
+  .create-button,.join-button {
+    width: 40%; /* Set width to 60% to keep it decent-sized */
+    padding: 12px;
+    margin: 10px auto; /* Center-align buttons */
+    font-size: 1rem;
+  }
+  .create-meet{
+
     display: flex;
-    justify-content: space-around;
-    overflow-x: scroll;
-    height: fit-content;
+    justify-content: center;
+  }
+}
+
+/* Responsive Styles for Extra Small Screens (Mobile Phones) */
+@media (max-width: 480px) {
+  .join-main {
+    padding: 10px;
+  }
+
+  .join-left-heading h1 {
+    font-size: 1.2rem;
+  }
+
+  .join-left-content {
+    font-size: 0.8rem;
+  }
+
+  .joinscreen-form,
+  .create-meet {
+    padding-left: 0;
+  }
+
+  .create-button,.join-button {
+    width: 30%; /* Slightly larger width but still not 100% */
+    font-size: 0.9rem;
+    padding: 10px;
+    margin: 10px auto; /* Center-align buttons */
+  }
+}
+
+/* Responsive Styles for Large Screens (Desktops, Large Laptops) */
+@media (min-width: 1200px) {
+  .join-content {
     width: 80%;
-    top: 50px;
-    position: absolute;
-} */
+    max-width: 1200px;
+    margin: auto;
+  }
+
+  .join-left-container,
+  .join-right-container {
+    width: 45%;
+  }
+
+  .join-left-heading h1 {
+    font-size: 2.5rem;
+  }
+
+  .join-left-content {
+    font-size: 1.4rem;
+  }
+
+  .joinscreen-form {
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 30px;
+  }
+
+  .form-control {
+    width: 60%;
+    margin-bottom: 0;
+  }
+
+  .create-button,.join-button {
+    padding: 15px 30px;
+    font-size: 1.1rem;
+  }
+
+  .create-meet {
+    margin-top: 20px;
+  }
+}
+
+/* Responsive Styles for Extra Large Screens (Large Monitors, TVs) */
+@media (min-width: 1600px) {
+  .join-content {
+    width: 70%;
+    max-width: 1400px;
+    margin: auto;
+  }
+
+  .join-left-container,
+  .join-right-container {
+    width: 40%;
+  }
+
+  .join-left-heading h1 {
+    font-size: 3rem;
+  }
+
+  .join-left-content {
+    font-size: 1.6rem;
+  }
+
+  .join-right-container img {
+    max-width: 90%;
+    box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  .create-button,.join-button {
+    padding: 20px 40px;
+    font-size: 1.2rem;
+  }
+}
+
+/* Footer styles */
+footer {
+  margin-top: auto; /* Pushes footer to the bottom */
+  background-color: #000;
+  color: #fff;
+  padding: 10px 0;
+  text-align: center;
+  width: 100%;
+}
