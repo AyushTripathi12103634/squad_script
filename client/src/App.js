@@ -11,8 +11,6 @@ import PrivacyPolicy from "./Pages/PrivacyPolicy";
 import LoginSignup from "./Pages/LoginSignup";
 import Profile from "./Pages/Profile";
 import ForgotPassword from "./Pages/ForgotPassword";
-import MeetingView from "./Pages/MeetingView";
-import PrivateRoute from "./Routes/PrivateRoute";
 function App() {
   return (
     <>
@@ -21,9 +19,6 @@ function App() {
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/join" element={<Join />} />
-            <Route path="/user/" element={<PrivateRoute />}>
-              <Route path="room/:id" element={<MeetingView />} />
-            </Route>
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/tnc" element={<TNC />} />

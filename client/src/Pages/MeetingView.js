@@ -6,21 +6,12 @@ import Chat from "../Components/Chat";
 import { io } from "socket.io-client";
 import { useMeeting } from "@videosdk.live/react-sdk";
 import "./MeetingView.css";
-import { useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { clearRoomState } from "../Redux/RoomSlice";
 
-export default function MeetingView() {
+export default function MeetingView({ meetingId, onMeetingLeave }) {
   const [joined, setJoined] = useState(null);
-  const { id } = useParams();
-  const meetingId = id;
-  const dispatch = useDispatch();
-
   const { join, participants } = useMeeting({
     onMeetingJoined: () => setJoined("JOINED"),
-    onMeetingLeft: () => {
-      dispatch(clearRoomState());
-    },
+    onMeetingLeft: onMeetingLeave,
   });
 
   const joinMeeting = () => {
