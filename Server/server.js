@@ -96,10 +96,6 @@ app.use("/api/v1/meet", meetRoute);
 app.use("/api/v1/rapidapi", rapidApiRoute);
 app.use("/api/v1/file", fileRoute);
 
-app.use("/", (req, res) => {
-  res.send("<h1>Squad Script</h1>");
-});
-
 const PORT = process.env.PORT || 5000;
 
 server.listen(PORT, () => {
