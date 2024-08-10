@@ -17,10 +17,11 @@ dotenv.config();
 connectDB();
 
 const app = express();
+app.use(cors({ origin: process.env.CLIENT_URL || "http://localhost:3000", methods: ["GET", "POST"], credentials: true }));
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "https://squad-script.vercel.app/",
+    origin: process.env.CLIENT_URL || "http://localhost:3000",
     methods: ["GET", "POST"],
     credentials: true,
   },
